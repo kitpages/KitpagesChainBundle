@@ -1,0 +1,25 @@
+{
+    "name": "kitpages/chain-bundle",
+    "type": "symfony-bundle",
+    "description": "",
+    "keywords": [],
+    "homepage": "https://github.com/kitpages/KitpagesChainBundle",
+    "license": "BSD",
+    "authors": [
+        {
+            "name": "Sebastien Lefebvre"
+        },
+        {
+            "name": "Philippe Le Van",
+            "homepage": "https://twitter.com/#!/plv"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "2.1.*"
+    },
+    "autoload": {
+        "psr-0": { "Kitpages\\ChainBundle": "" }
+    },
+    "target-dir": "Kitpages/ChainBundle"
+}
