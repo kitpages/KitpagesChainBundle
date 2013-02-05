@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
-
+use Symfony\Component\DependencyInjection\Reference;
 
 class KitpagesChainExtension extends Extension
 {
@@ -28,10 +28,8 @@ class KitpagesChainExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-        $this->remapParametersNamespaces($config, $container, array(
-            'command_list'  => 'kitpages_chain.command_list'
-        ));
-        $this->remapParametersNamespaces($config, $container, array(
+        $this->remapParameters($config, $container, array(
+            'command_list'  => 'kitpages_chain.command_list',
             'chain_list'  => 'kitpages_chain.chain_list'
         ));
 
@@ -40,36 +38,6 @@ class KitpagesChainExtension extends Extension
     public function getAlias()
     {
         return "kitpages_chain";
-    }
-    /**
-     * Dynamically remaps parameters from the config values
-     *
-     * @param array            $config
-     * @param ContainerBuilder $container
-     * @param array            $namespaces
-     * @return void
-     */
-    protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces)
-    {
-        foreach ($namespaces as $ns => $map) {
-            if ($ns) {
-                if (!isset($config[$ns])) {
-                    continue;
-                }
-                $namespaceConfig = $config[$ns];
-            } else {
-                $namespaceConfig = $config;
-            }
-            if (is_array($map)) {
-                $this->remapParameters($namespaceConfig, $container, $map);
-            } else {
-                foreach ($namespaceConfig as $name => $value) {
-                    if (null !== $value) {
-                        $container->setParameter(sprintf($map, $name), $value);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -87,5 +55,4 @@ class KitpagesChainExtension extends Extension
             }
         }
     }
-
 }

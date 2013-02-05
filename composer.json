@@ -1,8 +1,8 @@
 {
     "name": "kitpages/chain-bundle",
     "type": "symfony-bundle",
-    "description": "",
-    "keywords": [],
+    "description": "This is a Symfony2 bundle that executes the classes one after the other.",
+    "keywords": ["command chain"],
     "homepage": "https://github.com/kitpages/KitpagesChainBundle",
     "license": "BSD",
     "authors": [
