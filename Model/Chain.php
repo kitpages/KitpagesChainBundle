@@ -30,7 +30,7 @@ class Chain implements ChainInterface
                 try {
                     $command = $this->commandManager->getCommand($commandSlug, $commandConfig);
                     if ($command == null) {
-                        $this->logger->err('Command '.$commandSlug.' did not class.');
+                        $this->commandManager->getLogger()->err('Command '.$commandSlug.' did not class.');
                         throw new ChainException("The $commandSlug command did not class.");
                     }
                     $this->commandList[] =  $command;
@@ -49,14 +49,14 @@ class Chain implements ChainInterface
 
     public function execute()
     {
-        $this->logger->info('Chain '.$this->chainSlug.' begin');
+        $this->commandManager->getLogger()->info('Chain '.$this->chainSlug.' begin');
         $this->initCommandList();
         foreach($this->commandList as $command) {
-            $this->logger->info('Command '.$command->getSlug().' begin');
+            $this->commandManager->getLogger()->info('Command '.$command->getSlug().' begin');
             $command->execute();
-            $this->logger->info('Command '.$command->getSlug().' end');
+            $this->commandManager->getLogger()->info('Command '.$command->getSlug().' end');
         }
-        $this->logger->info('Chain '.$this->chainSlug.' end');
+        $this->commandManager->getLogger()->info('Chain '.$this->chainSlug.' end');
     }
 
 

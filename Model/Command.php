@@ -13,7 +13,7 @@ abstract class Command implements CommandInterface
         if (substr($value, 0, 1) == '@') {
 
         } else {
-            $this->$parameter = $value;
+            $this->parameterList[$parameter] = $value;
         }
     }
 

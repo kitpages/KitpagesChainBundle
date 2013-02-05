@@ -49,4 +49,9 @@ class CommandManager
         }
     }
 
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
 }
