@@ -1,46 +1,59 @@
 KitpagesChainBundle
-========================
+===================
 
 This is a Symfony2 bundle that executes the classes one after the other.
 
-Versions
-========
+## Versions
 
 
-Actual state
-============
+
+## Actual state
+
 This bundle is beta.
 
-Installation
-============
-You need to add the following lines in your deps :
+## Installation
 
-    [ChainBundle]
-        git=git://github.com/kitpages/KitpagesChainBundle.git
-        target=Kitpages/ChainBundle
+Add KitpagesChainBundle in your composer.json
+
+```js
+{
+    "require": {
+        "kitpages/chain-bundle": "*"
+    }
+}
+```
+
+Now tell composer to download the bundle by running the command:
+
+``` bash
+$ php composer.phar update kitpages/chain-bundle
+```
 
 AppKernel.php
 
-    $bundles = array(
-        ...
-        new Kitpages\ChainBundle\KitpagesChainBundle(),
-    );
+``` php
+$bundles = array(
+    ...
+    new Kitpages\ChainBundle\KitpagesChainBundle(),
+);
+```
 
 
-create command
-=====================
+## create command
 
-each command must inherit of kitpagesCommand
-each chain command must inherit of kitpagesChain
+* each command must inherit of kitpagesCommand
+* each chain command must inherit of kitpagesChain
 
-Configuration example
-=====================
+## Configuration example
+
 The following configuration defines 2 chain command :
 
 * kitpagesMep : a production start
 * kitpagesCms : instantiate a KitpagesCms
 
 Let's see the configuration in config.yml
+
+``` yaml
 kitpages_chain:
     command_list:
         CodeCopy:
@@ -71,18 +84,25 @@ kitpages_chain:
                     class: '\Kitpages\CmsBundle\Command\Install'
                     parameter_list:
                         level: master
+```
 
+## launch command in app/console
 
-launch command in app/console
-=====================
 * for chain command
+``` bash
 php app/console kitChain:launchChain --chain=kitpagesMep
-* for a command
-php app/console kitChain:launchCommand --command=CodeCopy --parameters_src_dir='/home/webadmin/htdocs/dev/cms2.kitpages.com'
+```
 
-launch command in php
-=====================
+* for a command
+``` bash
+php app/console kitChain:launchCommand --command=CodeCopy --parameters_src_dir='/home/webadmin/htdocs/dev/cms2.kitpages.com'
+```
+
+## launch command in php
+
 * for chain command
+``` php
+<?php
 $chainKitpages = $this->get("kitpages_chain.chain");
 $kitpagesMepChainKitpages = $chainKitpages->getChain('KitpagesMep');
 $commandList = $kitpagesMepChainKitpages->getCommandList;
@@ -91,12 +111,14 @@ $commandList['GitKitpages']->setParameter('url', 'git2.kitpages.com');
 $codeCopyCommandList = $kitpagesMepChainKitpages->getCommand('CodeCopy');
 $codeCopyCommandList->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
 $kitpagesMepChainKitpages->execute();
+```
 
 * for a command
+``` php
 $commandKitpages = $this->get("kitpages_chain.command");
 $codeCopyCommandKitpages = $commandKitpages->getCommand('CodeCopy');
 $codeCopyCommandKitpages->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
 
 $codeCopyCommandKitpages->execute();
-
+```
 
