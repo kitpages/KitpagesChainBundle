@@ -101,6 +101,7 @@ php app/console kitChain:launchCommand --command=CodeCopy --parameters_src_dir='
 ## launch command in php
 
 * for chain command
+
 ``` php
 <?php
 $chainKitpages = $this->get("kitpages_chain.chain");
@@ -114,6 +115,7 @@ $kitpagesMepChainKitpages->execute();
 ```
 
 * for a command
+
 ``` php
 $commandKitpages = $this->get("kitpages_chain.command");
 $codeCopyCommandKitpages = $commandKitpages->getCommand('CodeCopy');
