@@ -1,10 +1,11 @@
 <?php
 namespace Kitpages\ChainBundle\Service;
 
+use Kitpages\ChainBundle\ChainException;
+
 class CommandManager
 {
 
-    protected $logger = null;
     protected $commandList = null;
 
     public function __construct(
@@ -13,7 +14,6 @@ class CommandManager
     )
     {
         $this->commandList = $commandList;
-        $this->logger = $container->get('logger');
         $this->container = $container;
     }
 
@@ -21,37 +21,30 @@ class CommandManager
     {
         $command = null;
         if (isset($this->commandList[$commandSlug])) {
-            $this->logger->info('Command '.$commandSlug.' init');
             $commandManagerConfig = $this->commandList[$commandSlug];
             $command = new $commandManagerConfig['class'];
             $command->setContainer($this->container);
             if (isset($commandManagerConfig['parameter_list'])) {
                 $command->setParameterList($commandManagerConfig['parameter_list']);
             }
-        }
-
-        if($commandConfig != null) {
-            if ($command == null && isset($commandConfig['class'])) {
-                $this->logger->info('Command '.$commandSlug.' init');
-                $command = new $commandConfig['class'];
-                $command->setContainer($this->container);
-            }
-            if (isset($commandConfig['parameter_list'])) {
-                $command->setParameterList($commandConfig['parameter_list']);
-            }
-        }
-
-        if($command == null) {
-            $this->logger->info('Command '.$commandSlug.' no found in command_list general');
-            return null;
-        } else {
             return $command;
         }
-    }
 
-    public function getLogger()
-    {
-        return $this->logger;
+        if (!isset($commandConfig['class'])) {
+            throw new ChainException("unknown commandSlug and class undefined in config");
+        }
+
+        if (!class_exists($commandConfig['class'])) {
+            throw new ChainException("class ".$commandConfig['class']." doesn't exists");
+        }
+
+        $command = new $commandConfig['class'];
+        $command->setContainer($this->container);
+        if (isset($commandConfig['parameter_list'])) {
+            $command->setParameterList($commandConfig['parameter_list']);
+        }
+
+        return $command;
     }
 
 }

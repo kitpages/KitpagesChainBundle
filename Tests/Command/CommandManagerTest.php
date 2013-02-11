@@ -10,8 +10,8 @@ class CommandManagerTest extends WebTestCase
 {
     public function setUp()
     {
-        $client = static::createClient();
-        $this->container = $client->getContainer();
+//        $client = static::createClient();
+//        $this->container = $client->getContainer();
     }
     public function testSamplePhpunit()
     {
@@ -21,7 +21,7 @@ class CommandManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
+        $commandManager = new CommandManager($commandListConfig, null);
 
         $commandTest = $commandManager->getCommand('commandTest');
         $resultExecute = $commandTest->execute();
@@ -40,9 +40,7 @@ class CommandManagerTest extends WebTestCase
             )
         );
 
-        $container = new ContainerBuilder();
-
-        $commandManager = new CommandManager($commandListConfig, $this->container);
+        $commandManager = new CommandManager($commandListConfig, null);
 
         $commandTest = $commandManager->getCommand('commandTest');
         $resultExecute = $commandTest->execute();
@@ -61,9 +59,7 @@ class CommandManagerTest extends WebTestCase
             )
         );
 
-        $container = new ContainerBuilder();
-
-        $commandManager = new CommandManager($commandListConfig, $this->container);
+        $commandManager = new CommandManager($commandListConfig, null);
 
         $commandTest = $commandManager->getCommand('commandTest');
         $commandTest->setParameter('return', false);

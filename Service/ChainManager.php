@@ -28,15 +28,15 @@ class ChainManager
 
         $chainConfig = $this->chainList[$chainSlug];
 
-        $chain = new $chainConfig['class']($chainSlug);
+        $chain = new $chainConfig['class']();
 
-        $this->commandManager->getLogger()->info('Create Chain '.$chainSlug.' begin');
+        $this->logger->info('Create Chain '.$chainSlug.' begin');
 
         $commandList = $this->initCommandList($chainConfig['command_list']);
 
         $chain->setCommandList($commandList);
 
-        $this->commandManager->getLogger()->info('Create Chain '.$chainSlug.' end');
+        $this->logger->info('Create Chain '.$chainSlug.' end');
 
         return $chain;
 
@@ -49,7 +49,7 @@ class ChainManager
             try {
                 $command = $this->commandManager->getCommand($commandSlug, $commandConfig);
                 if ($command == null) {
-                    $this->logger()->err('Command '.$commandSlug.' did not class.');
+                    $this->logger->err('Command '.$commandSlug.' did not class.');
                     throw new ChainException("The $commandSlug command did not class.");
                 }
                 $commandList[$commandSlug] =  $command;

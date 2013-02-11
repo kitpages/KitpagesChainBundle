@@ -7,4 +7,5 @@ interface ChainInterface
 
     public function setCommandList($commandList);
 
+    public function getCommandList();
 }

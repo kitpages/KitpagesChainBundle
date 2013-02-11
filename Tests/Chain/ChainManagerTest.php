@@ -1,26 +1,24 @@
 <?php
-namespace Kitpages\ChainBundle\Tests\Command;
+namespace Kitpages\ChainBundle\Tests\Chain;
 
 use Kitpages\ChainBundle\Tests\Sample\CommandSample;
 use Kitpages\ChainBundle\Service\CommandManager;
 use Kitpages\ChainBundle\Service\ChainManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpKernel\Log\NullLogger;
 
 class ChainManagerTest extends WebTestCase
 {
+    private $logger = null;
+
     public function setUp()
     {
-        $client = static::createClient();
-        $this->container = $client->getContainer();
+        $this->logger = $this->getMock('Symfony\Component\HttpKernel\Log\NullLogger');
     }
 
     public function testSamplePhpunit()
     {
-
-        $client = static::createClient();
-        $container = $client->getContainer();
-
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
@@ -35,8 +33,8 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $container->get('logger'));
+        $commandManager = new CommandManager($commandListConfig, null);
+        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -45,9 +43,6 @@ class ChainManagerTest extends WebTestCase
 
     public function testWithCommandPhpunit()
     {
-
-        $client = $this->createClient();
-        $container = $client->getContainer();
 
         $chainListConfig = array(
             'chainTest' => array(
@@ -64,8 +59,8 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $container->get('logger'));
+        $commandManager = new CommandManager($commandListConfig, null);
+        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -74,10 +69,6 @@ class ChainManagerTest extends WebTestCase
 
     public function testWithCommandsPhpunit()
     {
-
-        $client = $this->createClient();
-        $container = $client->getContainer();
-
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
@@ -96,8 +87,8 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $container->get('logger'));
+        $commandManager = new CommandManager($commandListConfig, null);
+        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -106,10 +97,6 @@ class ChainManagerTest extends WebTestCase
 
     public function testWithParameterCommandPhpunit()
     {
-
-        $client = $this->createClient();
-        $container = $client->getContainer();
-
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
@@ -128,8 +115,8 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $container->get('logger'));
+        $commandManager = new CommandManager($commandListConfig, null);
+        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -138,10 +125,6 @@ class ChainManagerTest extends WebTestCase
 
     public function testWithParameterChainPhpunit()
     {
-
-        $client = $this->createClient();
-        $container = $client->getContainer();
-
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
@@ -164,8 +147,8 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $container->get('logger'));
+        $commandManager = new CommandManager($commandListConfig, null);
+        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -174,9 +157,6 @@ class ChainManagerTest extends WebTestCase
 
     public function testWithParameterModifyPhpunit()
     {
-
-        $client = $this->createClient();
-        $container = $client->getContainer();
 
         $chainListConfig = array(
             'chainTest' => array(
@@ -200,8 +180,8 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $container->get('logger'));
+        $commandManager = new CommandManager($commandListConfig, null);
+        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $commandList = $chainTest->getCommandList();

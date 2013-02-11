@@ -10,15 +10,8 @@ abstract class CommandAbstract implements CommandInterface
 
     public function setParameter($parameter, $value)
     {
-        if (substr($value, 0, 1) == '@') {
-
-        } else {
-            $this->parameterList[$parameter] = $value;
-        }
-    }
-
-    public function execute()
-    {
+        $this->parameterList[$parameter] = $value;
+        return $this;
     }
 
     public function setParameterList($parameterList)
@@ -26,11 +19,7 @@ abstract class CommandAbstract implements CommandInterface
         foreach($parameterList as $parameterName => $value) {
             $this->setParameter($parameterName, $value);
         }
-    }
-
-    public function getSlug()
-    {
-        return get_class($this);
+        return $this;
     }
 
     public function setContainer($container)
@@ -38,7 +27,7 @@ abstract class CommandAbstract implements CommandInterface
         $this->container = $container;
     }
 
-    public function getContainer()
+    protected function getContainer()
     {
         return $this->container;
     }
