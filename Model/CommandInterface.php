@@ -3,16 +3,15 @@ namespace Kitpages\ChainBundle\Model;
 
 interface CommandInterface
 {
-    function setParameter($parameter, $value);
+    public function setParameter($parameter, $value);
 
-    function setParameterList($parameterList);
+    public function setParameterList($parameterList);
 
-    function execute();
+    public function execute();
 
-    function getSlug();
+    public function getSlug();
 
-    function setContainer($cntainer);
+    public function setContainer($container);
 
-    function getContainer();
-
+    public function getContainer();
 }
