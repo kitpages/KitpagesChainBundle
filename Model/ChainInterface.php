@@ -3,12 +3,8 @@ namespace Kitpages\ChainBundle\Model;
 
 interface ChainInterface
 {
-    function execute();
+    public function execute();
 
-    function getCommandList();
-
-    function setCommandConfigList($commandList);
-
-    function setCommandManager($commandManager);
+    public function setCommandList($commandList);
 
 }

@@ -9,9 +9,5 @@ interface CommandInterface
 
     public function execute();
 
-    public function getSlug();
-
     public function setContainer($container);
-
-    public function getContainer();
 }

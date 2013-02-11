@@ -29,7 +29,7 @@ class CommandManager
                 $command->setParameterList($commandManagerConfig['parameter_list']);
             }
         }
-        //echo var_dump($this->container->get('doctrine'));
+
         if($commandConfig != null) {
             if ($command == null && isset($commandConfig['class'])) {
                 $this->logger->info('Command '.$commandSlug.' init');

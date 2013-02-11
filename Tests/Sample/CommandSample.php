@@ -1,38 +1,14 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Model\CommandInterface;
+use Kitpages\ChainBundle\Model\CommandAbstract;
 
-class CommandSample implements CommandInterface
+class CommandSample extends CommandAbstract
 {
-    private $parameterList = array();
 
-    public function setParameter($parameter, $value)
-    {
-        $this->parameterList["$parameter"] = $value;
-    }
-
-    public function setParameterList($parameterList)
-    {
-        $this->parameterList = $parameterList;
-    }
+    public $parameterList = array('return' => true);
 
     public function execute() {
-        return true;
-    }
-
-    public function getSlug()
-    {
-        return "samplecommand";
-    }
-
-    public function setContainer($container)
-    {
-
-    }
-
-    public function getContainer()
-    {
-
+        return $this->parameterList['return'];
     }
 }

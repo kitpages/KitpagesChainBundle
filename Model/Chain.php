@@ -15,58 +15,25 @@ class Chain implements ChainInterface
         $this->chainSlug = $chainSlug;
     }
 
-    public function isCommandList()
+    public function setCommandList($commandList)
     {
-        if ($this->commandList == null) {
-            return false;
-        }
-        return true;
-    }
-
-    public function initCommandList()
-    {
-        if (!$this->isCommandList()) {
-            foreach($this->commandConfigList as $commandSlug => $commandConfig) {
-                try {
-                    $command = $this->commandManager->getCommand($commandSlug, $commandConfig);
-                    if ($command == null) {
-                        $this->commandManager->getLogger()->err('Command '.$commandSlug.' did not class.');
-                        throw new ChainException("The $commandSlug command did not class.");
-                    }
-                    $this->commandList[] =  $command;
-                } catch (ChainException $exc) {
-                    throw new ChainException($exc->getMessage());
-                }
-            }
-        }
+        $this->commandList = $commandList;
     }
 
     public function getCommandList()
     {
-        $this->initCommandList();
         return $this->commandList;
     }
 
     public function execute()
     {
-        $this->commandManager->getLogger()->info('Chain '.$this->chainSlug.' begin');
-        $this->initCommandList();
+        $this->commandManager->getLogger()->info('Execute Chain '.$this->chainSlug.' begin');
         foreach($this->commandList as $command) {
             $this->commandManager->getLogger()->info('Command '.$command->getSlug().' begin');
             $command->execute();
             $this->commandManager->getLogger()->info('Command '.$command->getSlug().' end');
         }
-        $this->commandManager->getLogger()->info('Chain '.$this->chainSlug.' end');
+        $this->commandManager->getLogger()->info('Execute Chain '.$this->chainSlug.' end');
     }
 
-
-    function setCommandConfigList($commandConfigList)
-    {
-        $this->commandConfigList = $commandConfigList;
-    }
-
-    function setCommandManager($commandManager)
-    {
-        $this->commandManager = $commandManager;
-    }
 }
