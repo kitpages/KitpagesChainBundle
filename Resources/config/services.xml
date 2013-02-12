@@ -13,7 +13,6 @@
         <service id="kitpages_chain.chain" class="%kitpages_chain.chain.manager%" >
             <argument>%kitpages_chain.chain_list%</argument>
             <argument type="service" id="kitpages_chain.command"/>
-            <argument type="service" id="logger"/>
         </service>
         <service id="kitpages_chain.command" class="%kitpages_chain.command.manager%" >
             <argument>%kitpages_chain.command_list%</argument>

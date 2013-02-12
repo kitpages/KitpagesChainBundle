@@ -9,6 +9,7 @@ class CommandSample implements CommandInterface
     public $parameterList = array('return' => "original");
 
     public function execute() {
+        echo "CommandSample execute() => ret=".$this->parameterList['return']."\n";
         return $this->parameterList['return'];
     }
 

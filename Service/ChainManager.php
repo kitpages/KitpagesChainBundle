@@ -2,25 +2,21 @@
 namespace Kitpages\ChainBundle\Service;
 
 use Kitpages\ChainBundle\Service\CommandManager;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Kitpages\ChainBundle\ChainException;
 
 class ChainManager
 {
 
-    protected $logger = null;
     protected $commandManager = null;
     protected $chainConfigList = null;
 
     public function __construct(
         $chainConfigList,
-        CommandManager $commandManager,
-        LoggerInterface $logger
+        CommandManager $commandManager
     )
     {
         $this->chainConfigList = $chainConfigList;
         $this->commandManager = $commandManager;
-        $this->logger = $logger;
     }
 
     public function getChain($chainSlug)

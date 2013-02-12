@@ -14,6 +14,7 @@ class ChainSample implements ChainInterface
         foreach($this->commandList as $slug => $command) {
             $res = $command->execute();
         }
+        echo "ChainSample execute() => ret=$res\n";
         return $res;
     }
 

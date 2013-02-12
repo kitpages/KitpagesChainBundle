@@ -12,13 +12,13 @@ class executeChainCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('kitChain:launchChain')
-            ->addArgument('chainSlug', InputArgument::REQUIRED, 'chain slug')
+            ->setName('kitpages:chain:run-chain')
+            ->addArgument('chainName', InputArgument::REQUIRED, 'chain name')
             ->setHelp(<<<EOT
-The <info>kitChain:launchChain</info> execute a command chain
+The <info>kitpages:chain:run-chain</info> execute a command chain
 EOT
             )
-            ->setDescription('')
+            ->setDescription('Name of the chain')
             ;
 
 
@@ -26,10 +26,10 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $chainSlug = $input->getArgument('chainSlug');
+        $chainName = $input->getArgument('chainName');
 
         $chainManager = $this->getContainer()->get('kitpages_chain.chain');
-        $chain = $chainManager->getChain($chainSlug);
+        $chain = $chainManager->getChain($chainName);
         $chain->execute();
 
     }
