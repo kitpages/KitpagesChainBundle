@@ -1,7 +1,11 @@
 KitpagesChainBundle
 ===================
 
-This is a Symfony2 bundle that executes the classes one after the other.
+[![Build Status](http://travis-ci.org/kitpages/KitpagesChainBundle.png)](http://travis-ci.org/#!/kitpages/KitpagesChainBundle)
+
+This bundle is used ton configure a workflow (a chain of commands) in
+the config.yml in order to execute this workflow from app/console or
+from PHP.
 
 ## Versions
 
@@ -39,10 +43,31 @@ $bundles = array(
 ```
 
 
-## create command
+## create a command
 
-* each command must inherit of kitpagesCommand
-* each chain command must inherit of kitpagesChain
+Each command must implements CommandInterface or extend CommandAbstract. The DIC
+is injected to the command with the method setContainer.
+
+```php
+<?php
+namespace Kitpages\ChainBundle\Tests\Sample;
+
+use Kitpages\ChainBundle\Model\CommandAbstract;
+
+class CommandSample extends CommandAbstract
+{
+    public function execute() {
+        // do whatever you want
+        return $whatever;
+    }
+}
+```
+
+## create a chain
+
+You generaly don't have to create a chain. You can use the default chain class
+located in Model/Chain.php. Just look at this class if you need to change the
+default behavior.
 
 ## Configuration example
 
@@ -60,7 +85,7 @@ kitpages_chain:
             class: '\Kitpages\ChainBundle\Command\CodeCopy'
             parameter_list:
                 src_dir: '/home/webadmin/htdocs/dev/www.kitpages.com'
-                src_dest: '/home/webadmin/htdocs/prod/www.kitpages.com'
+                dest_dir: '/home/webadmin/htdocs/prod/www.kitpages.com'
         GitKitpages:
             class: '\Kitpages\ChainBundle\Command\GitKitpages'
             parameter_list:
@@ -68,7 +93,7 @@ kitpages_chain:
     chain_list:
         kitpagesMep:
             command_list:
-                CodeCopy:
+                CodeCopy: ~
                 GitKitpages:
                     parameter_list:
                         url: git2.kitpages.com
@@ -79,42 +104,33 @@ kitpages_chain:
                 CodeCopy:
                     parameter_list:
                         src_dir: '/home/webadmin/htdocs/dev/cms.kitpages.com'
-                        src_dest: '/home/webadmin/htdocs/prod/cms.kitpages.com'
+                        dest_dir: '/home/webadmin/htdocs/prod/cms.kitpages.com'
                 InstallCms:
                     class: '\Kitpages\CmsBundle\Command\Install'
                     parameter_list:
                         level: master
 ```
 
-## launch command in app/console
+## using app/console
+### run a command with app/console
 
-* for chain command
 ``` bash
-php app/console kitChain:launchChain --chain=kitpagesMep
+# lancer une commande avec les paramètres du config.yml
+php app/console kitpages:chain:run-command CodeCopy
+
+# lancer une commande en écrasant des paramètres du config.yml
+php app/console kitpages:chain:run-command CodeCopy --p=src_dir:'/home/webadmin/src' --p=dest_dir:'/tmp/destDir'
 ```
 
-* for a command
+### run a chain with app/console
+
 ``` bash
-php app/console kitChain:launchCommand --command=CodeCopy --parameters_src_dir='/home/webadmin/htdocs/dev/cms2.kitpages.com'
+php app/console kitpages:chain:run-chain kitpagesMep
 ```
 
-## launch command in php
+## run a chain or a command with PHP
 
-* for chain command
-
-``` php
-<?php
-$chainKitpages = $this->get("kitpages_chain.chain");
-$kitpagesMepChainKitpages = $chainKitpages->getChain('KitpagesMep');
-$commandList = $kitpagesMepChainKitpages->getCommandList;
-$commandList['GitKitpages']->setParameter('url', 'git2.kitpages.com');
-
-$codeCopyCommandList = $kitpagesMepChainKitpages->getCommand('CodeCopy');
-$codeCopyCommandList->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
-$kitpagesMepChainKitpages->execute();
-```
-
-* for a command
+### run a command with PHP
 
 ``` php
 $commandKitpages = $this->get("kitpages_chain.command");
@@ -123,4 +139,19 @@ $codeCopyCommandKitpages->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms
 
 $codeCopyCommandKitpages->execute();
 ```
+
+### run a chain with PHP
+
+``` php
+<?php
+$chainManager = $this->get("kitpages_chain.chain");
+$kitpagesMepChainKitpages = $chainManager->getChain('kitpagesMep');
+$commandList = $kitpagesMepChainKitpages->getCommandList();
+$commandList['GitKitpages']->setParameter('url', 'git2.kitpages.com');
+
+$codeCopyCommandList = $kitpagesMepChainKitpages->getCommand('CodeCopy');
+$codeCopyCommandList->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
+$kitpagesMepChainKitpages->execute();
+```
+
 
