@@ -1,7 +1,7 @@
 KitpagesChainBundle
 ===================
 
-[![Build Status](http://travis-ci.org/kitpages/KitpagesChainBundle.png)](http://travis-ci.org/#!/kitpages/KitpagesChainBundle)
+[![Build Status](https://travis-ci.org/kitpages/KitpagesChainBundle.png?branch=master)](https://travis-ci.org/kitpages/KitpagesChainBundle)
 
 This bundle is used ton configure a workflow (a chain of commands) in
 the config.yml in order to execute this workflow from app/console or
