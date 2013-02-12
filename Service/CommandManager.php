@@ -2,6 +2,7 @@
 namespace Kitpages\ChainBundle\Service;
 
 use Kitpages\ChainBundle\ChainException;
+use Kitpages\ChainBundle\Model\CommandInterface;
 
 class CommandManager
 {
@@ -36,6 +37,10 @@ class CommandManager
                 throw new ChainException("class $className doesn't exist");
             }
             $command = new $className();
+            if (! $command instanceof CommandInterface) {
+                throw new ChainException("Command class $className doesn't implements CommandInterface");
+            }
+
 
             // inject DIC
             $command->setContainer($this->container);
@@ -65,7 +70,12 @@ class CommandManager
             throw new ChainException("class ".$commandConfig['class']." doesn't exists");
         }
 
-        $command = new $commandConfig['class'];
+        $command = new $commandConfig['class']();
+
+        if (! $command instanceof CommandInterface) {
+            throw new ChainException("Command class ".$commandConfig['class']." doesn't implements CommandInterface");
+        }
+
         $command->setContainer($this->container);
         if (isset($commandConfig['parameter_list']) && is_array($commandConfig['parameter_list'])) {
             foreach($commandConfig['parameter_list'] as $key => $val) {

@@ -3,6 +3,7 @@ namespace Kitpages\ChainBundle\Service;
 
 use Kitpages\ChainBundle\Service\CommandManager;
 use Kitpages\ChainBundle\ChainException;
+use Kitpages\ChainBundle\Model\ChainInterface;
 
 class ChainManager
 {
@@ -32,6 +33,9 @@ class ChainManager
             $chainClass = $chainConfig['class'];
         }
         $chain = new $chainClass();
+        if (! $chain instanceof ChainInterface) {
+            throw new ChainException("Chain class $chainClass doesn't implements ChainInterface");
+        }
 
         // fill chain with command list
         $commandList = $this->initCommandList($chainConfig['command_list']);

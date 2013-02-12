@@ -30,8 +30,7 @@ EOT
 
         $chainManager = $this->getContainer()->get('kitpages_chain.chain');
         $chain = $chainManager->getChain($chainName);
-        $chain->execute();
-
+        $output->writeln("ChainName: $chainName; output=".$chain->execute());
     }
 
 

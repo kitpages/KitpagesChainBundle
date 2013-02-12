@@ -21,12 +21,9 @@ EOT
             )
             ->setDescription('run a kitpagesChainBundle command')
             ;
-
-
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $commandName = $input->getArgument('commandName');
         $parameterStringList = $input->getOption('p');
         $parameterList = array();
@@ -39,8 +36,7 @@ EOT
         );
         $commandManager = $this->getContainer()->get('kitpages_chain.command');
         $command = $commandManager->getCommand($commandName, $commandConfig);
-        $command->execute();
-
+        $output->writeln("CommandName: $commandName; output=".$command->execute()."\n");
     }
 
 
