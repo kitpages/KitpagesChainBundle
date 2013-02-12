@@ -20,16 +20,43 @@ class CommandManager
     public function getCommand($commandSlug, $commandConfig = null)
     {
         $command = null;
+
+        // if command slug exists in command list config
         if (isset($this->commandList[$commandSlug])) {
             $commandManagerConfig = $this->commandList[$commandSlug];
-            $command = new $commandManagerConfig['class'];
+
+            // instanciate class
+            if (isset($commandManagerConfig['class'])) {
+                $className = $commandManagerConfig['class'];
+            }
+            if (isset($commandConfig['class'])) {
+                $className = $commandConfig['class'];
+            }
+            if (!class_exists($className)) {
+                throw new ChainException("class $className doesn't exist");
+            }
+            $command = new $className();
+
+            // inject DIC
             $command->setContainer($this->container);
-            if (isset($commandManagerConfig['parameter_list'])) {
-                $command->setParameterList($commandManagerConfig['parameter_list']);
+
+            // inject parameters from command config
+            if (isset($commandManagerConfig['parameter_list']) && is_array($commandManagerConfig['parameter_list'])) {
+                foreach($commandManagerConfig['parameter_list'] as $key => $val) {
+                    $command->setParameter($key, $val);
+                }
+            }
+
+            // inject parameters from chain config or directly injected
+            if (isset($commandConfig['parameter_list']) && is_array($commandConfig['parameter_list'])) {
+                foreach($commandConfig['parameter_list'] as $key => $val) {
+                    $command->setParameter($key, $val);
+                }
             }
             return $command;
         }
 
+        // command slug is only defined in chain config
         if (!isset($commandConfig['class'])) {
             throw new ChainException("unknown commandSlug and class undefined in config");
         }
@@ -40,8 +67,10 @@ class CommandManager
 
         $command = new $commandConfig['class'];
         $command->setContainer($this->container);
-        if (isset($commandConfig['parameter_list'])) {
-            $command->setParameterList($commandConfig['parameter_list']);
+        if (isset($commandConfig['parameter_list']) && is_array($commandConfig['parameter_list'])) {
+            foreach($commandConfig['parameter_list'] as $key => $val) {
+                $command->setParameter($key, $val);
+            }
         }
 
         return $command;

@@ -13,7 +13,7 @@ class CommandManagerTest extends WebTestCase
 //        $client = static::createClient();
 //        $this->container = $client->getContainer();
     }
-    public function testSamplePhpunit()
+    public function testSimpleCommand()
     {
         $commandListConfig = array(
             'commandTest' => array(
@@ -25,17 +25,17 @@ class CommandManagerTest extends WebTestCase
 
         $commandTest = $commandManager->getCommand('commandTest');
         $resultExecute = $commandTest->execute();
-        $this->assertEquals($resultExecute, true);
+        $this->assertEquals($resultExecute, "original");
     }
 
-    public function testParameterPhpunit()
+    public function testCommandWithParameter()
     {
 
         $commandListConfig = array(
             'commandTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample',
                 'parameter_list' => array(
-                    'return' => false
+                    'return' => "changed"
                 )
             )
         );
@@ -44,17 +44,17 @@ class CommandManagerTest extends WebTestCase
 
         $commandTest = $commandManager->getCommand('commandTest');
         $resultExecute = $commandTest->execute();
-        $this->assertEquals($resultExecute, false);
+        $this->assertEquals($resultExecute, "changed");
     }
 
-    public function testParameterModifyPhpunit()
+    public function testCommandWithManualyChangedParameter()
     {
 
         $commandListConfig = array(
             'commandTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample',
                 'parameter_list' => array(
-                    'return' => true
+                    'return' => "changed"
                 )
             )
         );
@@ -62,8 +62,34 @@ class CommandManagerTest extends WebTestCase
         $commandManager = new CommandManager($commandListConfig, null);
 
         $commandTest = $commandManager->getCommand('commandTest');
-        $commandTest->setParameter('return', false);
+        $commandTest->setParameter('return', "changed2");
         $resultExecute = $commandTest->execute();
-        $this->assertEquals($resultExecute, false);
+        $this->assertEquals($resultExecute, "changed2");
     }
+
+    public function testCommandWithConfigChangedParameter()
+    {
+
+        $commandListConfig = array(
+            'commandTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample',
+                'parameter_list' => array(
+                    'return' => "changed"
+                )
+            )
+        );
+        $customChangedConfig = array(
+            'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample2',
+            'parameter_list' => array(
+                'return' => "configChanged"
+            )
+        );
+
+        $commandManager = new CommandManager($commandListConfig, null);
+
+        $commandTest = $commandManager->getCommand('commandTest', $customChangedConfig);
+        $resultExecute = $commandTest->execute();
+        $this->assertEquals($resultExecute, "configChanged");
+    }
+
 }

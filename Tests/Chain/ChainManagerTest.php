@@ -17,7 +17,7 @@ class ChainManagerTest extends WebTestCase
         $this->logger = $this->getMock('Symfony\Component\HttpKernel\Log\NullLogger');
     }
 
-    public function testSamplePhpunit()
+    public function testChainCreationWithoutAnyCommand()
     {
         $chainListConfig = array(
             'chainTest' => array(
@@ -38,10 +38,10 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, true);
+        $this->assertEquals($resultExecute, null);
     }
 
-    public function testWithCommandPhpunit()
+    public function testChainWithCommand()
     {
 
         $chainListConfig = array(
@@ -64,10 +64,34 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, true);
+        $this->assertEquals($resultExecute, "original");
     }
 
-    public function testWithCommandsPhpunit()
+    public function testChainWithoutClassConfig()
+    {
+        $chainListConfig = array(
+            'chainTest' => array(
+                'command_list' => array(
+                    "commandTest" => array()
+                )
+            )
+        );
+
+        $commandListConfig = array(
+            'commandTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample'
+            )
+        );
+
+        $commandManager = new CommandManager($commandListConfig, null);
+        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+
+        $chainTest = $chainManager->getChain('chainTest');
+        $resultExecute = $chainTest->execute();
+        $this->assertEquals($resultExecute, "original");
+    }
+
+    public function testWithTwoCommands()
     {
         $chainListConfig = array(
             'chainTest' => array(
@@ -92,10 +116,10 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, true);
+        $this->assertEquals($resultExecute, "original");
     }
 
-    public function testWithParameterCommandPhpunit()
+    public function testWithParameterCommand()
     {
         $chainListConfig = array(
             'chainTest' => array(
@@ -110,7 +134,7 @@ class ChainManagerTest extends WebTestCase
             'commandTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample',
                 'parameter_list' => array(
-                    'return' => false
+                    'return' => "changed"
                 )
             )
         );
@@ -120,10 +144,10 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, false);
+        $this->assertEquals($resultExecute, "changed");
     }
 
-    public function testWithParameterChainPhpunit()
+    public function testWithParameterChangedInChain()
     {
         $chainListConfig = array(
             'chainTest' => array(
@@ -131,7 +155,7 @@ class ChainManagerTest extends WebTestCase
                 'command_list' => array(
                     'commandTest' => array(
                         'parameter_list' => array(
-                            'return' => false
+                            'return' => "ChangedByChain"
                         )
                     )
                 )
@@ -142,7 +166,7 @@ class ChainManagerTest extends WebTestCase
             'commandTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample',
                 'parameter_list' => array(
-                    'return' => true
+                    'return' => "ChangedByCommand"
                 )
             )
         );
@@ -152,7 +176,34 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, false);
+        $this->assertEquals($resultExecute, "ChangedByChain");
+    }
+
+    public function testWithClassChangedInChain()
+    {
+        $chainListConfig = array(
+            'chainTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
+                'command_list' => array(
+                    'commandTest' => array(
+                        'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample2'
+                    )
+                )
+            )
+        );
+
+        $commandListConfig = array(
+            'commandTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample'
+            )
+        );
+
+        $commandManager = new CommandManager($commandListConfig, null);
+        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+
+        $chainTest = $chainManager->getChain('chainTest');
+        $resultExecute = $chainTest->execute();
+        $this->assertEquals($resultExecute, "originalSample2");
     }
 
     public function testWithParameterModifyPhpunit()
@@ -164,7 +215,7 @@ class ChainManagerTest extends WebTestCase
                 'command_list' => array(
                     'commandTest' => array(
                         'parameter_list' => array(
-                            'return' => true
+                            'return' => "ChangedByChain"
                         )
                     )
                 )
@@ -175,7 +226,7 @@ class ChainManagerTest extends WebTestCase
             'commandTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample',
                 'parameter_list' => array(
-                    'return' => true
+                    'return' => "ChangedByCommand"
                 )
             )
         );
@@ -185,10 +236,10 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $commandList = $chainTest->getCommandList();
-        $commandList['commandTest']->setParameter('return', false);
+        $commandList['commandTest']->setParameter('return', "ChangedManualy");
         $chainTest->setCommandList($commandList);
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, false);
+        $this->assertEquals($resultExecute, "ChangedManualy");
     }
 
 

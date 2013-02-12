@@ -9,12 +9,6 @@ class Chain implements ChainInterface
 
     protected $commandList = null;
 
-    public function __construct(
-        $chainSlug
-    ) {
-        $this->chainSlug = $chainSlug;
-    }
-
     public function setCommandList($commandList)
     {
         $this->commandList = $commandList;
@@ -27,13 +21,11 @@ class Chain implements ChainInterface
 
     public function execute()
     {
-        $this->commandManager->getLogger()->info('Execute Chain '.$this->chainSlug.' begin');
+        $result = null;
         foreach($this->commandList as $command) {
-            $this->commandManager->getLogger()->info('Command '.$command->getSlug().' begin');
-            $command->execute();
-            $this->commandManager->getLogger()->info('Command '.$command->getSlug().' end');
+            $result = $command->execute();
         }
-        $this->commandManager->getLogger()->info('Execute Chain '.$this->chainSlug.' end');
+        return $result;
     }
 
 }

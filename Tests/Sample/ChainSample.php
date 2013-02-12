@@ -10,12 +10,11 @@ class ChainSample implements ChainInterface
 
     public function execute()
     {
-        $return[] = true;
-        foreach($this->commandList as $command) {
-            $return[] = $command->execute();
+        $res = null;
+        foreach($this->commandList as $slug => $command) {
+            $res = $command->execute();
         }
-
-        return (array_search(false, $return) == false)?true:false;
+        return $res;
     }
 
     public function setCommandList($commandList) {

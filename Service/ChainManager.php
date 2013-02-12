@@ -10,36 +10,37 @@ class ChainManager
 
     protected $logger = null;
     protected $commandManager = null;
-    protected $chainList = null;
+    protected $chainConfigList = null;
 
     public function __construct(
-        $chainList,
+        $chainConfigList,
         CommandManager $commandManager,
         LoggerInterface $logger
     )
     {
-        $this->chainList = $chainList;
+        $this->chainConfigList = $chainConfigList;
         $this->commandManager = $commandManager;
         $this->logger = $logger;
     }
 
     public function getChain($chainSlug)
     {
+        $chainConfig = $this->chainConfigList[$chainSlug];
 
-        $chainConfig = $this->chainList[$chainSlug];
+        // instanciate chain instance
+        $chainClass = '\\Kitpages\\ChainBundle\\Model\\Chain';
+        if (isset($chainConfig['class']) && class_exists($chainConfig['class'])) {
+            if (! class_exists($chainConfig['class']) ) {
+                throw new ChainException("Chain class ".$chainConfig['class']." doesn't exists");
+            }
+            $chainClass = $chainConfig['class'];
+        }
+        $chain = new $chainClass();
 
-        $chain = new $chainConfig['class']();
-
-        $this->logger->info('Create Chain '.$chainSlug.' begin');
-
+        // fill chain with command list
         $commandList = $this->initCommandList($chainConfig['command_list']);
-
         $chain->setCommandList($commandList);
-
-        $this->logger->info('Create Chain '.$chainSlug.' end');
-
         return $chain;
-
     }
 
     public function initCommandList($commandConfigList)
@@ -48,17 +49,11 @@ class ChainManager
         foreach($commandConfigList as $commandSlug => $commandConfig) {
             try {
                 $command = $this->commandManager->getCommand($commandSlug, $commandConfig);
-                if ($command == null) {
-                    $this->logger->err('Command '.$commandSlug.' did not class.');
-                    throw new ChainException("The $commandSlug command did not class.");
-                }
                 $commandList[$commandSlug] =  $command;
-            } catch (ChainException $exc) {
-                throw new ChainException($exc->getMessage());
+            } catch (ChainException $e) {
+                throw new ChainException($e->getMessage());
             }
         }
         return $commandList;
     }
-
-
 }
