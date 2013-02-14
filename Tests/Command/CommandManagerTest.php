@@ -5,13 +5,13 @@ use Kitpages\ChainBundle\Tests\Sample\CommandSample;
 use Kitpages\ChainBundle\Service\CommandManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
 class CommandManagerTest extends WebTestCase
 {
     public function setUp()
     {
-//        $client = static::createClient();
-//        $this->container = $client->getContainer();
+        $this->container = $this->getMock('Symfony\Component\DependencyInjection\Container');
     }
     public function testSimpleCommand()
     {
@@ -21,7 +21,7 @@ class CommandManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
 
         $commandTest = $commandManager->getCommand('commandTest');
         $resultExecute = $commandTest->execute();
@@ -40,7 +40,7 @@ class CommandManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
 
         $commandTest = $commandManager->getCommand('commandTest');
         $resultExecute = $commandTest->execute();
@@ -59,7 +59,7 @@ class CommandManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
 
         $commandTest = $commandManager->getCommand('commandTest');
         $commandTest->setParameter('return', "changed2");
@@ -85,7 +85,7 @@ class CommandManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
 
         $commandTest = $commandManager->getCommand('commandTest', $customChangedConfig);
         $resultExecute = $commandTest->execute();

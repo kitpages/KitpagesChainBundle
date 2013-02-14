@@ -15,6 +15,7 @@ class ChainManagerTest extends WebTestCase
     public function setUp()
     {
         $this->logger = $this->getMock('Symfony\Component\HttpKernel\Log\NullLogger');
+        $this->container = $this->getMock('Symfony\Component\DependencyInjection\Container');
     }
 
     public function testChainCreationWithoutAnyCommand()
@@ -33,7 +34,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
         $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -59,7 +60,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
         $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -83,7 +84,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
         $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -111,7 +112,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
         $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -139,7 +140,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
         $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -171,7 +172,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
         $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -198,7 +199,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
         $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -231,7 +232,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, null);
+        $commandManager = new CommandManager($commandListConfig, $this->container);
         $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');

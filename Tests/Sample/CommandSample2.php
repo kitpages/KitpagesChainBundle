@@ -2,6 +2,7 @@
 namespace Kitpages\ChainBundle\Tests\Sample;
 
 use Kitpages\ChainBundle\Model\CommandInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CommandSample2 implements CommandInterface
 {
@@ -17,7 +18,8 @@ class CommandSample2 implements CommandInterface
         return $this;
     }
 
-    public function setContainer($container) {
-        return;
+    public function setContainer(ContainerInterface $container)
+    {
     }
+
 }
