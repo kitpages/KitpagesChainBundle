@@ -51,12 +51,8 @@ class ChainManager
     {
         $commandList = array();
         foreach($commandConfigList as $commandSlug => $commandConfig) {
-            try {
-                $command = $this->commandManager->getCommand($commandSlug, $commandConfig);
-                $commandList[$commandSlug] =  $command;
-            } catch (ChainException $e) {
-                throw new ChainException($e->getMessage());
-            }
+            $command = $this->commandManager->getCommand($commandSlug, $commandConfig);
+            $commandList[$commandSlug] =  $command;
         }
         return $commandList;
     }
