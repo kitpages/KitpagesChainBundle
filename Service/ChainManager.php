@@ -23,10 +23,14 @@ class ChainManager
     public function getChain($chainSlug)
     {
         $chainConfig = $this->chainConfigList[$chainSlug];
+        // normalize chainConfig
+        if (!isset($chainConfig['command_list'])) {
+            $chainConfig['command_list'] = array();
+        }
 
         // instanciate chain instance
         $chainClass = '\\Kitpages\\ChainBundle\\Model\\Chain';
-        if (isset($chainConfig['class']) && class_exists($chainConfig['class'])) {
+        if (isset($chainConfig['class'])) {
             if (! class_exists($chainConfig['class']) ) {
                 throw new ChainException("Chain class ".$chainConfig['class']." doesn't exists");
             }

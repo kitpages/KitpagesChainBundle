@@ -18,7 +18,7 @@ class CommandManager
         $this->container = $container;
     }
 
-    public function getCommand($commandSlug, $commandConfig = null)
+    public function getCommand($commandSlug, $commandConfig = array())
     {
         $command = null;
 

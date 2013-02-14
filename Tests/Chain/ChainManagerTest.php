@@ -4,6 +4,7 @@ namespace Kitpages\ChainBundle\Tests\Chain;
 use Kitpages\ChainBundle\Tests\Sample\CommandSample;
 use Kitpages\ChainBundle\Service\CommandManager;
 use Kitpages\ChainBundle\Service\ChainManager;
+use Kitpages\ChainBundle\ChainException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\Log\NullLogger;
@@ -90,6 +91,38 @@ class ChainManagerTest extends WebTestCase
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute, "original");
+
+        $commandList = $chainTest->getCommandList();
+        $this->assertEquals(count($commandList), 1);
+        $this->assertTrue(array_key_exists("commandTest", $commandList));
+    }
+
+    public function testChainExceptions()
+    {
+        $chainListConfig = array(
+            'ChainThatDoesNotExist' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainThatDoesNotExist'
+            ),
+            'ChainWithoutInterface' => array(
+                'class' => 'Kitpages\ChainBundle\KitpagesChainBundle'
+            )
+        );
+        $commandManager = new CommandManager(array(), $this->container);
+        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+
+        try {
+            $chainTest = $chainManager->getChain('ChainThatDoesNotExist');
+            $this->fail('No exception raised for ChainThatDoesNotExist');
+        } catch (ChainException $e) {
+            $this->assertTrue(true);
+        }
+
+        try {
+            $chainTest = $chainManager->getChain('ChainWithoutInterface');
+            $this->fail('No exception raised for ChainWithoutInterface');
+        } catch (ChainException $e) {
+            $this->assertTrue(true);
+        }
     }
 
     public function testWithTwoCommands()

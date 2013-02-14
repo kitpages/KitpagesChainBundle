@@ -23,6 +23,10 @@ class CommandAbstractTest extends \PHPUnit_Framework_TestCase
         $command = new CommandSampleFromAbstract();
         $res = $command->getParameter("test");
         $this->assertEquals($res, null);
+
+        $command->setParameter("glou", "foo");
+        $res = $res = $command->getParameter("glou");
+        $this->assertEquals($res, "foo");
     }
 
 }
