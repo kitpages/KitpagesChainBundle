@@ -3,6 +3,7 @@ namespace Kitpages\ChainBundle\Processor;
 
 use Kitpages\ChainBundle\ChainException;
 use Kitpages\ChainBundle\Processor\ProcessorInterface;
+use Kitpages\ChainBundle\Proxy\ProxyGenerator;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -46,7 +47,10 @@ class ProcessorManager
             throw new ChainException("class ".$className." doesn't exists");
         }
 
-        $processor = new $className();
+        // generate processor
+        $proxyGenerator = new ProxyGenerator();
+        $processor = $proxyGenerator->generateProcessProxy($className);
+        $processor->__chainProxySetEventDispatcher($this->eventDispatcher);
 
         if (! $processor instanceof ProcessorInterface) {
             throw new ChainException("Processor class ".$className." doesn't implements ProcessorInterface");
