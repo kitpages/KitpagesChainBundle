@@ -2,7 +2,7 @@
 namespace Kitpages\ChainBundle\Chain;
 
 use Kitpages\ChainBundle\Chain\ChainInterface;
-use Kitpages\ChainBundle\ChainException;
+use Kitpages\ChainBundle\Processor\ProcessorEvent;
 
 class Chain implements ChainInterface
 {
@@ -19,11 +19,16 @@ class Chain implements ChainInterface
         return $this->processorList;
     }
 
-    public function execute()
+    public function execute(ProcessorEvent $event = null)
     {
-        $result = null;
+        if ($event == null) {
+            $event = new ProcessorEvent();
+        }
         foreach($this->processorList as $processor) {
-            $result = $processor->execute();
+            $result = $processor->execute($event);
+            if ($event->isPropagationStopped()) {
+                break;
+            }
         }
         return $result;
     }

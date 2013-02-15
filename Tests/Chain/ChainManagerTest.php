@@ -25,7 +25,7 @@ class ChainManagerTest extends WebTestCase
     {
         $chainListConfig = array(
             'chainTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'processor_list' => array(
                 )
             )
@@ -33,7 +33,7 @@ class ChainManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
@@ -50,7 +50,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainListConfig = array(
             'chainTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'processor_list' => array(
                     'processorTest' => array()
                 )
@@ -59,7 +59,7 @@ class ChainManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
@@ -68,7 +68,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, "original");
+        $this->assertEquals($resultExecute->getReturnValue(), "original");
     }
 
     public function testChainWithoutClassConfig()
@@ -83,7 +83,7 @@ class ChainManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
@@ -92,7 +92,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, "original");
+        $this->assertEquals($resultExecute->getReturnValue(), "original");
 
         $processorList = $chainTest->getProcessorList();
         $this->assertEquals(count($processorList), 1);
@@ -103,10 +103,10 @@ class ChainManagerTest extends WebTestCase
     {
         $chainListConfig = array(
             'ChainThatDoesNotExist' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainThatDoesNotExist'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainThatDoesNotExist'
             ),
             'ChainWithoutInterface' => array(
-                'class' => 'Kitpages\ChainBundle\KitpagesChainBundle'
+                'class' => '\Kitpages\ChainBundle\KitpagesChainBundle'
             )
         );
         $processorManager = new ProcessorManager(array(), $this->container, $this->eventDispatcher);
@@ -131,7 +131,7 @@ class ChainManagerTest extends WebTestCase
     {
         $chainListConfig = array(
             'chainTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'processor_list' => array(
                     'processorTest' => array()
                 )
@@ -140,10 +140,10 @@ class ChainManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             ),
             'processorTest2' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
@@ -152,14 +152,14 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, "original");
+        $this->assertEquals($resultExecute->getReturnValue(), "original");
     }
 
     public function testWithParameterProcessor()
     {
         $chainListConfig = array(
             'chainTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'processor_list' => array(
                     'processorTest' => array()
                 )
@@ -168,7 +168,7 @@ class ChainManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
                 'parameter_list' => array(
                     'return' => "changed"
                 )
@@ -180,14 +180,14 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, "changed");
+        $this->assertEquals($resultExecute->getReturnValue(), "changed");
     }
 
     public function testWithParameterChangedInChain()
     {
         $chainListConfig = array(
             'chainTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'processor_list' => array(
                     'processorTest' => array(
                         'parameter_list' => array(
@@ -200,7 +200,7 @@ class ChainManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
                 'parameter_list' => array(
                     'return' => "ChangedByProcessor"
                 )
@@ -212,17 +212,17 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, "ChangedByChain");
+        $this->assertEquals($resultExecute->getReturnValue(), "ChangedByChain");
     }
 
     public function testWithClassChangedInChain()
     {
         $chainListConfig = array(
             'chainTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'processor_list' => array(
                     'processorTest' => array(
-                        'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample2'
+                        'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample2'
                     )
                 )
             )
@@ -230,7 +230,7 @@ class ChainManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
@@ -239,7 +239,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, "originalSample2");
+        $this->assertEquals($resultExecute->getReturnValue(), "originalSample2");
     }
 
     public function testWithParameterModifyPhpunit()
@@ -247,7 +247,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainListConfig = array(
             'chainTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'processor_list' => array(
                     'processorTest' => array(
                         'parameter_list' => array(
@@ -260,7 +260,7 @@ class ChainManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
                 'parameter_list' => array(
                     'return' => "ChangedByProcessor"
                 )
@@ -275,7 +275,7 @@ class ChainManagerTest extends WebTestCase
         $processorList['processorTest']->setParameter('return', "ChangedManualy");
         $chainTest->setProcessorList($processorList);
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute, "ChangedManualy");
+        $this->assertEquals($resultExecute->getReturnValue(), "ChangedManualy");
     }
 
 

@@ -3,18 +3,22 @@ namespace Kitpages\ChainBundle\Tests\Sample;
 
 use Kitpages\ChainBundle\Chain\ChainInterface;
 use Kitpages\ChainBundle\ChainException;
+use Kitpages\ChainBundle\Processor\ProcessorEvent;
 
 class ChainSample implements ChainInterface
 {
     private $processorList = array();
 
-    public function execute()
+    public function execute(ProcessorEvent $event = null)
     {
         $res = null;
-        foreach($this->processorList as $slug => $processor) {
-            $res = $processor->execute();
+        if ($event == null) {
+            $event = new ProcessorEvent();
         }
-        echo "ChainSample execute() => ret=$res\n";
+        foreach($this->processorList as $slug => $processor) {
+            $res = $processor->execute($event);
+        }
+        //echo "ChainSample execute() => ret=$res\n";
         return $res;
     }
 

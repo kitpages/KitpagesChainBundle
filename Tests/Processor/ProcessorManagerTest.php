@@ -19,7 +19,7 @@ class ProcessorManagerTest extends WebTestCase
     {
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
@@ -27,7 +27,7 @@ class ProcessorManagerTest extends WebTestCase
 
         $processorTest = $processorManager->getProcessor('processorTest');
         $resultExecute = $processorTest->execute();
-        $this->assertEquals($resultExecute, "original");
+        $this->assertEquals($resultExecute->getReturnValue(), "original");
     }
 
     public function testProcessorWithParameter()
@@ -35,7 +35,7 @@ class ProcessorManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
                 'parameter_list' => array(
                     'return' => "changed"
                 )
@@ -46,17 +46,17 @@ class ProcessorManagerTest extends WebTestCase
 
         $processorTest = $processorManager->getProcessor('processorTest');
         $resultExecute = $processorTest->execute();
-        $this->assertEquals($resultExecute, "changed");
+        $this->assertEquals($resultExecute->getReturnValue(), "changed");
     }
 
     public function testProcessorExceptions()
     {
         $processorListConfig = array(
             'ProcessorThatDoesNotExist' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorThatDoesNotExist'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorThatDoesNotExist'
             ),
             'ProcessorWithoutInterface' => array(
-                'class' => 'Kitpages\ChainBundle\KitpagesChainBundle'
+                'class' => '\Kitpages\ChainBundle\KitpagesChainBundle'
             )
         );
         $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
@@ -81,10 +81,10 @@ class ProcessorManagerTest extends WebTestCase
 
         $extraProcessorListConfig = array(
             'ProcessorThatDoesNotExist' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorThatDoesNotExist'
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorThatDoesNotExist'
             ),
             'ProcessorWithoutInterface' => array(
-                'class' => 'Kitpages\ChainBundle\KitpagesChainBundle'
+                'class' => '\Kitpages\ChainBundle\KitpagesChainBundle'
             )
         );
         $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
@@ -116,7 +116,7 @@ class ProcessorManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
                 'parameter_list' => array(
                     'return' => "changed"
                 )
@@ -128,7 +128,7 @@ class ProcessorManagerTest extends WebTestCase
         $processorTest = $processorManager->getProcessor('processorTest');
         $processorTest->setParameter('return', "changed2");
         $resultExecute = $processorTest->execute();
-        $this->assertEquals($resultExecute, "changed2");
+        $this->assertEquals($resultExecute->getReturnValue(), "changed2");
     }
 
     public function testProcessorWithConfigChangedParameter()
@@ -136,14 +136,14 @@ class ProcessorManagerTest extends WebTestCase
 
         $processorListConfig = array(
             'processorTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
                 'parameter_list' => array(
                     'return' => "changed"
                 )
             )
         );
         $customChangedConfig = array(
-            'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample2',
+            'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample2',
             'parameter_list' => array(
                 'return' => "configChanged"
             )
@@ -153,7 +153,7 @@ class ProcessorManagerTest extends WebTestCase
 
         $processorTest = $processorManager->getProcessor('processorTest', $customChangedConfig);
         $resultExecute = $processorTest->execute();
-        $this->assertEquals($resultExecute, "configChanged");
+        $this->assertEquals($resultExecute->getReturnValue(), "configChanged");
     }
 
 }

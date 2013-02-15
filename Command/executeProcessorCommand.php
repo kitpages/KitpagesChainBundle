@@ -36,7 +36,7 @@ EOT
         );
         $processorManager = $this->getContainer()->get('kitpages_chain.processor');
         $processor = $processorManager->getProcessor($processorName, $processorConfig);
-        $output->writeln("ProcessorName: $processorName; output=".$processor->execute()."\n");
+        $output->writeln("ProcessorName: $processorName; output=".$processor->execute()->getReturnValue()."\n");
     }
 
 
