@@ -2,7 +2,7 @@
 namespace Kitpages\ChainBundle\Tests\Processor;
 
 use Kitpages\ChainBundle\ChainException;
-use Kitpages\ChainBundle\Service\ProcessorManager;
+use Kitpages\ChainBundle\Processor\ProcessorManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Container;

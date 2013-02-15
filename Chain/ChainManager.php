@@ -1,9 +1,9 @@
 <?php
-namespace Kitpages\ChainBundle\Service;
+namespace Kitpages\ChainBundle\Chain;
 
-use Kitpages\ChainBundle\Service\ProcessorManager;
+use Kitpages\ChainBundle\Processor\ProcessorManager;
 use Kitpages\ChainBundle\ChainException;
-use Kitpages\ChainBundle\Model\ChainInterface;
+use Kitpages\ChainBundle\Chain\ChainInterface;
 
 class ChainManager
 {
@@ -29,7 +29,7 @@ class ChainManager
         }
 
         // instanciate chain instance
-        $chainClass = '\\Kitpages\\ChainBundle\\Model\\Chain';
+        $chainClass = '\Kitpages\ChainBundle\Chain\Chain';
         if (isset($chainConfig['class'])) {
             if (! class_exists($chainConfig['class']) ) {
                 throw new ChainException("Chain class ".$chainConfig['class']." doesn't exists");

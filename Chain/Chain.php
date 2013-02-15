@@ -1,7 +1,7 @@
 <?php
-namespace Kitpages\ChainBundle\Model;
+namespace Kitpages\ChainBundle\Chain;
 
-use Kitpages\ChainBundle\Model\ChainInterface;
+use Kitpages\ChainBundle\Chain\ChainInterface;
 use Kitpages\ChainBundle\ChainException;
 
 class Chain implements ChainInterface

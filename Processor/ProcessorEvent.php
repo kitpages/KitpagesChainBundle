@@ -4,7 +4,7 @@
  * Date: 15/02/13
  */
 
-namespace Kitpages\ChainBundle\Event\Event;
+namespace Kitpages\ChainBundle\Processor;
 
 use Symfony\Component\EventDispatcher\Event;
 

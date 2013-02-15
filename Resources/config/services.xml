@@ -5,8 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="kitpages_chain.chain.manager">Kitpages\ChainBundle\Service\ChainManager</parameter>
-        <parameter key="kitpages_chain.processor.manager">Kitpages\ChainBundle\Service\ProcessorManager</parameter>
+        <parameter key="kitpages_chain.chain.manager">Kitpages\ChainBundle\Chain\ChainManager</parameter>
+        <parameter key="kitpages_chain.processor.manager">Kitpages\ChainBundle\Processor\ProcessorManager</parameter>
     </parameters>
 
     <services>

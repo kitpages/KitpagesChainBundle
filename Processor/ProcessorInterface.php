@@ -1,9 +1,9 @@
 <?php
-namespace Kitpages\ChainBundle\Model;
+namespace Kitpages\ChainBundle\Processor;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Kitpages\ChainBundle\Event\ProcessorEvent;
+use Kitpages\ChainBundle\Processor\ProcessorEvent;
 
 interface ProcessorInterface
 {

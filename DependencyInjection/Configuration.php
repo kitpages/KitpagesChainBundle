@@ -66,7 +66,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('class')
-                                ->defaultValue('\Kitpages\ChainBundle\Model\Chain')
+                                ->defaultValue('\Kitpages\ChainBundle\Chain\Chain')
                             ->end()
                             ->arrayNode('processor_list')
                                 ->useAttributeAsKey('processor_slug')

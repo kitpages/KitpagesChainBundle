@@ -52,7 +52,7 @@ is injected to the processor with the method setContainer.
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Model\ProcessorAbstract;
+use Kitpages\ChainBundle\Processor\ProcessorAbstract;
 
 class ProcessorSample extends ProcessorAbstract
 {

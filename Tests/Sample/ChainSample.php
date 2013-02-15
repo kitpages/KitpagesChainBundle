@@ -1,7 +1,7 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Model\ChainInterface;
+use Kitpages\ChainBundle\Chain\ChainInterface;
 use Kitpages\ChainBundle\ChainException;
 
 class ChainSample implements ChainInterface

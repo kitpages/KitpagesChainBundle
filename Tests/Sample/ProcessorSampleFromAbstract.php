@@ -1,8 +1,8 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Model\ProcessorAbstract;
-use Kitpages\ChainBundle\Event\ProcessorEvent;
+use Kitpages\ChainBundle\Processor\ProcessorAbstract;
+use Kitpages\ChainBundle\Processor\ProcessorEvent;
 
 class ProcessorSampleFromAbstract
     extends ProcessorAbstract

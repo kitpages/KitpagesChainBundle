@@ -1,8 +1,8 @@
 <?php
-namespace Kitpages\ChainBundle\Service;
+namespace Kitpages\ChainBundle\Processor;
 
 use Kitpages\ChainBundle\ChainException;
-use Kitpages\ChainBundle\Model\ProcessorInterface;
+use Kitpages\ChainBundle\Processor\ProcessorInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

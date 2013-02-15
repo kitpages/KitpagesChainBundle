@@ -1,8 +1,8 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Model\ProcessorInterface;
-use Kitpages\ChainBundle\Event\ProcessorEvent;
+use Kitpages\ChainBundle\Processor\ProcessorInterface;
+use Kitpages\ChainBundle\Processor\ProcessorEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ProcessorSample implements ProcessorInterface

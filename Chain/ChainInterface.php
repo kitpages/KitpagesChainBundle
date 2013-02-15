@@ -1,5 +1,5 @@
 <?php
-namespace Kitpages\ChainBundle\Model;
+namespace Kitpages\ChainBundle\Chain;
 
 interface ChainInterface
 {

@@ -1,7 +1,7 @@
 <?php
-namespace Kitpages\ChainBundle\Model;
+namespace Kitpages\ChainBundle\Processor;
 
-use Kitpages\ChainBundle\Model\ProcessorInterface;
+use Kitpages\ChainBundle\Processor\ProcessorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class ProcessorAbstract implements ProcessorInterface
