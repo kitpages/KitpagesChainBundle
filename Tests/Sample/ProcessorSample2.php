@@ -2,6 +2,7 @@
 namespace Kitpages\ChainBundle\Tests\Sample;
 
 use Kitpages\ChainBundle\Model\ProcessorInterface;
+use Kitpages\ChainBundle\Event\ProcessorEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ProcessorSample2 implements ProcessorInterface
@@ -9,7 +10,7 @@ class ProcessorSample2 implements ProcessorInterface
 
     public $parameterList = array('return' => "originalSample2");
 
-    public function execute() {
+    public function execute(ProcessorEvent $event = null) {
         return $this->parameterList['return'];
     }
 

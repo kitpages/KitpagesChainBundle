@@ -8,6 +8,7 @@ use Kitpages\ChainBundle\ChainException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\Log\NullLogger;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ChainManagerTest extends WebTestCase
 {
@@ -17,6 +18,7 @@ class ChainManagerTest extends WebTestCase
     {
         $this->logger = $this->getMock('Symfony\Component\HttpKernel\Log\NullLogger');
         $this->container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
     }
 
     public function testChainCreationWithoutAnyProcessor()
@@ -35,7 +37,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
         $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -61,7 +63,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
         $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -85,7 +87,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
         $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -107,7 +109,7 @@ class ChainManagerTest extends WebTestCase
                 'class' => 'Kitpages\ChainBundle\KitpagesChainBundle'
             )
         );
-        $processorManager = new ProcessorManager(array(), $this->container);
+        $processorManager = new ProcessorManager(array(), $this->container, $this->eventDispatcher);
         $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         try {
@@ -145,7 +147,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
         $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -173,7 +175,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
         $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -205,7 +207,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
         $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -232,7 +234,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
         $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
@@ -265,7 +267,7 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
         $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');

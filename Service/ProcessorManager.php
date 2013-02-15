@@ -4,27 +4,34 @@ namespace Kitpages\ChainBundle\Service;
 use Kitpages\ChainBundle\ChainException;
 use Kitpages\ChainBundle\Model\ProcessorInterface;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 class ProcessorManager
 {
 
     protected $processorList = null;
+    protected $container = null;
+    protected $eventDispatcher = null;
 
     public function __construct(
         $processorList,
-        $container
+        ContainerInterface $container,
+        EventDispatcherInterface $eventDispatcher
     )
     {
         $this->processorList = $processorList;
         $this->container = $container;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function getProcessor($processorSlug, $processorConfig = array())
+    public function getProcessor($processorName, $processorConfig = array())
     {
         $processor = null;
 
-        // if processor slug exists in processor list config
-        if (isset($this->processorList[$processorSlug])) {
-            $processorManagerConfig = $this->processorList[$processorSlug];
+        // if processor name exists in processor list config
+        if (isset($this->processorList[$processorName])) {
+            $processorManagerConfig = $this->processorList[$processorName];
 
             // instanciate class
             if (isset($processorManagerConfig['class'])) {
@@ -61,9 +68,9 @@ class ProcessorManager
             return $processor;
         }
 
-        // processor slug is only defined in chain config
+        // processor name is only defined in chain config
         if (!isset($processorConfig['class'])) {
-            throw new ChainException("unknown processorSlug and class undefined in config");
+            throw new ChainException("unknown processorName and class undefined in config");
         }
 
         if (!class_exists($processorConfig['class'])) {

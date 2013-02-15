@@ -6,12 +6,14 @@ use Kitpages\ChainBundle\Service\ProcessorManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ProcessorManagerTest extends WebTestCase
 {
     public function setUp()
     {
         $this->container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
     }
     public function testSimpleProcessor()
     {
@@ -21,7 +23,7 @@ class ProcessorManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
 
         $processorTest = $processorManager->getProcessor('processorTest');
         $resultExecute = $processorTest->execute();
@@ -40,7 +42,7 @@ class ProcessorManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
 
         $processorTest = $processorManager->getProcessor('processorTest');
         $resultExecute = $processorTest->execute();
@@ -57,7 +59,7 @@ class ProcessorManagerTest extends WebTestCase
                 'class' => 'Kitpages\ChainBundle\KitpagesChainBundle'
             )
         );
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
 
         try {
             $processorTest = $processorManager->getProcessor('ProcessorThatDoesNotExist');
@@ -85,7 +87,7 @@ class ProcessorManagerTest extends WebTestCase
                 'class' => 'Kitpages\ChainBundle\KitpagesChainBundle'
             )
         );
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
 
         try {
             $processorTest = $processorManager->getProcessor('ProcessorNotDefined', array());
@@ -121,7 +123,7 @@ class ProcessorManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
 
         $processorTest = $processorManager->getProcessor('processorTest');
         $processorTest->setParameter('return', "changed2");
@@ -147,7 +149,7 @@ class ProcessorManagerTest extends WebTestCase
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
 
         $processorTest = $processorManager->getProcessor('processorTest', $customChangedConfig);
         $resultExecute = $processorTest->execute();

@@ -17,6 +17,7 @@
         <service id="kitpages_chain.processor" class="%kitpages_chain.processor.manager%" >
             <argument>%kitpages_chain.processor_list%</argument>
             <argument type="service" id="service_container" />
+            <argument type="service" id="event_dispatcher"/>
         </service>
     </services>
 
