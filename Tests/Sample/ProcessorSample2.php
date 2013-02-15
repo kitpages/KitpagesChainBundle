@@ -1,10 +1,10 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Model\CommandInterface;
+use Kitpages\ChainBundle\Model\ProcessorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CommandSample2 implements CommandInterface
+class ProcessorSample2 implements ProcessorInterface
 {
 
     public $parameterList = array('return' => "originalSample2");

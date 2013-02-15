@@ -7,23 +7,23 @@ use Kitpages\ChainBundle\ChainException;
 class Chain implements ChainInterface
 {
 
-    protected $commandList = null;
+    protected $processorList = null;
 
-    public function setCommandList($commandList)
+    public function setProcessorList($processorList)
     {
-        $this->commandList = $commandList;
+        $this->processorList = $processorList;
     }
 
-    public function getCommandList()
+    public function getProcessorList()
     {
-        return $this->commandList;
+        return $this->processorList;
     }
 
     public function execute()
     {
         $result = null;
-        foreach($this->commandList as $command) {
-            $result = $command->execute();
+        foreach($this->processorList as $processor) {
+            $result = $processor->execute();
         }
         return $result;
     }

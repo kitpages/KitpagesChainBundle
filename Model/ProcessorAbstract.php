@@ -1,10 +1,10 @@
 <?php
 namespace Kitpages\ChainBundle\Model;
 
-use Kitpages\ChainBundle\Model\CommandInterface;
+use Kitpages\ChainBundle\Model\ProcessorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class CommandAbstract implements CommandInterface
+abstract class ProcessorAbstract implements ProcessorInterface
 {
     protected $container = null;
     protected $parameterList = array();

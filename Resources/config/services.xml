@@ -6,16 +6,16 @@
 
     <parameters>
         <parameter key="kitpages_chain.chain.manager">Kitpages\ChainBundle\Service\ChainManager</parameter>
-        <parameter key="kitpages_chain.command.manager">Kitpages\ChainBundle\Service\CommandManager</parameter>
+        <parameter key="kitpages_chain.processor.manager">Kitpages\ChainBundle\Service\ProcessorManager</parameter>
     </parameters>
 
     <services>
         <service id="kitpages_chain.chain" class="%kitpages_chain.chain.manager%" >
             <argument>%kitpages_chain.chain_list%</argument>
-            <argument type="service" id="kitpages_chain.command"/>
+            <argument type="service" id="kitpages_chain.processor"/>
         </service>
-        <service id="kitpages_chain.command" class="%kitpages_chain.command.manager%" >
-            <argument>%kitpages_chain.command_list%</argument>
+        <service id="kitpages_chain.processor" class="%kitpages_chain.processor.manager%" >
+            <argument>%kitpages_chain.processor_list%</argument>
             <argument type="service" id="service_container" />
         </service>
     </services>

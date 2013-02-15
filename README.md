@@ -3,7 +3,7 @@ KitpagesChainBundle
 
 [![Build Status](https://travis-ci.org/kitpages/KitpagesChainBundle.png?branch=master)](https://travis-ci.org/kitpages/KitpagesChainBundle)
 
-This bundle is used ton configure a workflow (a chain of commands) in
+This bundle is used ton configure a workflow (a chain of processors) in
 the config.yml in order to execute this workflow from app/console or
 from PHP.
 
@@ -27,7 +27,7 @@ Add KitpagesChainBundle in your composer.json
 }
 ```
 
-Now tell composer to download the bundle by running the command:
+Now tell composer to download the bundle by running the processor:
 
 ``` bash
 $ php composer.phar update kitpages/chain-bundle
@@ -43,18 +43,18 @@ $bundles = array(
 ```
 
 
-## create a command
+## create a processor
 
-Each command must implements CommandInterface or extend CommandAbstract. The DIC
-is injected to the command with the method setContainer.
+Each processor must implements ProcessorInterface or extend ProcessorAbstract. The DIC
+is injected to the processor with the method setContainer.
 
 ```php
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Model\CommandAbstract;
+use Kitpages\ChainBundle\Model\ProcessorAbstract;
 
-class CommandSample extends CommandAbstract
+class ProcessorSample extends ProcessorAbstract
 {
     public function execute() {
         // do whatever you want
@@ -71,7 +71,7 @@ default behavior.
 
 ## Configuration example
 
-The following configuration defines 2 chain command :
+The following configuration defines 2 chain processor :
 
 * kitpagesMep : a production start
 * kitpagesCms : instantiate a KitpagesCms
@@ -80,46 +80,46 @@ Let's see the configuration in config.yml
 
 ``` yaml
 kitpages_chain:
-    command_list:
+    processor_list:
         CodeCopy:
-            class: '\Kitpages\ChainBundle\Command\CodeCopy'
+            class: '\Kitpages\ChainBundle\Processor\CodeCopy'
             parameter_list:
                 src_dir: '/home/webadmin/htdocs/dev/www.kitpages.com'
                 dest_dir: '/home/webadmin/htdocs/prod/www.kitpages.com'
         GitKitpages:
-            class: '\Kitpages\ChainBundle\Command\GitKitpages'
+            class: '\Kitpages\ChainBundle\Processor\GitKitpages'
             parameter_list:
                 url: git.kitpages.com
     chain_list:
         kitpagesMep:
-            command_list:
+            processor_list:
                 CodeCopy: ~
                 GitKitpages:
                     parameter_list:
                         url: git2.kitpages.com
 
         kitpagesCms:
-            class: '\Kitpages\CmsBundle\Command\ChainCommand'
-            command_list:
+            class: '\Kitpages\CmsBundle\Processor\ChainProcessor'
+            processor_list:
                 CodeCopy:
                     parameter_list:
                         src_dir: '/home/webadmin/htdocs/dev/cms.kitpages.com'
                         dest_dir: '/home/webadmin/htdocs/prod/cms.kitpages.com'
                 InstallCms:
-                    class: '\Kitpages\CmsBundle\Command\Install'
+                    class: '\Kitpages\CmsBundle\Processor\Install'
                     parameter_list:
                         level: master
 ```
 
 ## using app/console
-### run a command with app/console
+### run a processor with app/console
 
 ``` bash
-# lancer une commande avec les paramètres du config.yml
-php app/console kitpages:chain:run-command CodeCopy
+# lancer une processore avec les paramètres du config.yml
+php app/console kitpages:chain:run-processor CodeCopy
 
-# lancer une commande en écrasant des paramètres du config.yml
-php app/console kitpages:chain:run-command CodeCopy --p=src_dir:'/home/webadmin/src' --p=dest_dir:'/tmp/destDir'
+# lancer une processore en écrasant des paramètres du config.yml
+php app/console kitpages:chain:run-processor CodeCopy --p=src_dir:'/home/webadmin/src' --p=dest_dir:'/tmp/destDir'
 ```
 
 ### run a chain with app/console
@@ -128,16 +128,16 @@ php app/console kitpages:chain:run-command CodeCopy --p=src_dir:'/home/webadmin/
 php app/console kitpages:chain:run-chain kitpagesMep
 ```
 
-## run a chain or a command with PHP
+## run a chain or a processor with PHP
 
-### run a command with PHP
+### run a processor with PHP
 
 ``` php
-$commandKitpages = $this->get("kitpages_chain.command");
-$codeCopyCommandKitpages = $commandKitpages->getCommand('CodeCopy');
-$codeCopyCommandKitpages->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
+$processorKitpages = $this->get("kitpages_chain.processor");
+$codeCopyProcessorKitpages = $processorKitpages->getProcessor('CodeCopy');
+$codeCopyProcessorKitpages->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
 
-$codeCopyCommandKitpages->execute();
+$codeCopyProcessorKitpages->execute();
 ```
 
 ### run a chain with PHP
@@ -146,11 +146,11 @@ $codeCopyCommandKitpages->execute();
 <?php
 $chainManager = $this->get("kitpages_chain.chain");
 $kitpagesMepChainKitpages = $chainManager->getChain('kitpagesMep');
-$commandList = $kitpagesMepChainKitpages->getCommandList();
-$commandList['GitKitpages']->setParameter('url', 'git2.kitpages.com');
+$processorList = $kitpagesMepChainKitpages->getProcessorList();
+$processorList['GitKitpages']->setParameter('url', 'git2.kitpages.com');
 
-$codeCopyCommandList = $kitpagesMepChainKitpages->getCommand('CodeCopy');
-$codeCopyCommandList->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
+$codeCopyProcessorList = $kitpagesMepChainKitpages->getProcessor('CodeCopy');
+$codeCopyProcessorList->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
 $kitpagesMepChainKitpages->execute();
 ```
 

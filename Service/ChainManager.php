@@ -1,31 +1,31 @@
 <?php
 namespace Kitpages\ChainBundle\Service;
 
-use Kitpages\ChainBundle\Service\CommandManager;
+use Kitpages\ChainBundle\Service\ProcessorManager;
 use Kitpages\ChainBundle\ChainException;
 use Kitpages\ChainBundle\Model\ChainInterface;
 
 class ChainManager
 {
 
-    protected $commandManager = null;
+    protected $processorManager = null;
     protected $chainConfigList = null;
 
     public function __construct(
         $chainConfigList,
-        CommandManager $commandManager
+        ProcessorManager $processorManager
     )
     {
         $this->chainConfigList = $chainConfigList;
-        $this->commandManager = $commandManager;
+        $this->processorManager = $processorManager;
     }
 
     public function getChain($chainSlug)
     {
         $chainConfig = $this->chainConfigList[$chainSlug];
         // normalize chainConfig
-        if (!isset($chainConfig['command_list'])) {
-            $chainConfig['command_list'] = array();
+        if (!isset($chainConfig['processor_list'])) {
+            $chainConfig['processor_list'] = array();
         }
 
         // instanciate chain instance
@@ -41,19 +41,19 @@ class ChainManager
             throw new ChainException("Chain class $chainClass doesn't implements ChainInterface");
         }
 
-        // fill chain with command list
-        $commandList = $this->initCommandList($chainConfig['command_list']);
-        $chain->setCommandList($commandList);
+        // fill chain with processor list
+        $processorList = $this->initProcessorList($chainConfig['processor_list']);
+        $chain->setProcessorList($processorList);
         return $chain;
     }
 
-    public function initCommandList($commandConfigList)
+    public function initProcessorList($processorConfigList)
     {
-        $commandList = array();
-        foreach($commandConfigList as $commandSlug => $commandConfig) {
-            $command = $this->commandManager->getCommand($commandSlug, $commandConfig);
-            $commandList[$commandSlug] =  $command;
+        $processorList = array();
+        foreach($processorConfigList as $processorSlug => $processorConfig) {
+            $processor = $this->processorManager->getProcessor($processorSlug, $processorConfig);
+            $processorList[$processorSlug] =  $processor;
         }
-        return $commandList;
+        return $processorList;
     }
 }

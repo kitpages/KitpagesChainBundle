@@ -1,17 +1,17 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Model\CommandInterface;
+use Kitpages\ChainBundle\Model\ProcessorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CommandSample implements CommandInterface
+class ProcessorSample implements ProcessorInterface
 {
 
     public $parameterList = array('return' => "original");
 
     public function execute()
     {
-        echo "CommandSample execute() => ret=".$this->parameterList['return']."\n";
+        echo "ProcessorSample execute() => ret=".$this->parameterList['return']."\n";
         return $this->parameterList['return'];
     }
 

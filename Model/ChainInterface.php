@@ -5,7 +5,7 @@ interface ChainInterface
 {
     public function execute();
 
-    public function setCommandList($commandList);
+    public function setProcessorList($processorList);
 
-    public function getCommandList();
+    public function getProcessorList();
 }

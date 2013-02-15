@@ -1,8 +1,8 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Chain;
 
-use Kitpages\ChainBundle\Tests\Sample\CommandSample;
-use Kitpages\ChainBundle\Service\CommandManager;
+use Kitpages\ChainBundle\Tests\Sample\ProcessorSample;
+use Kitpages\ChainBundle\Service\ProcessorManager;
 use Kitpages\ChainBundle\Service\ChainManager;
 use Kitpages\ChainBundle\ChainException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,50 +19,50 @@ class ChainManagerTest extends WebTestCase
         $this->container = $this->getMock('Symfony\Component\DependencyInjection\Container');
     }
 
-    public function testChainCreationWithoutAnyCommand()
+    public function testChainCreationWithoutAnyProcessor()
     {
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'command_list' => array(
+                'processor_list' => array(
                 )
             )
         );
 
-        $commandListConfig = array(
-            'commandTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample'
+        $processorListConfig = array(
+            'processorTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute, null);
     }
 
-    public function testChainWithCommand()
+    public function testChainWithProcessor()
     {
 
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'command_list' => array(
-                    'commandTest' => array()
+                'processor_list' => array(
+                    'processorTest' => array()
                 )
             )
         );
 
-        $commandListConfig = array(
-            'commandTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample'
+        $processorListConfig = array(
+            'processorTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -73,28 +73,28 @@ class ChainManagerTest extends WebTestCase
     {
         $chainListConfig = array(
             'chainTest' => array(
-                'command_list' => array(
-                    "commandTest" => array()
+                'processor_list' => array(
+                    "processorTest" => array()
                 )
             )
         );
 
-        $commandListConfig = array(
-            'commandTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample'
+        $processorListConfig = array(
+            'processorTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute, "original");
 
-        $commandList = $chainTest->getCommandList();
-        $this->assertEquals(count($commandList), 1);
-        $this->assertTrue(array_key_exists("commandTest", $commandList));
+        $processorList = $chainTest->getProcessorList();
+        $this->assertEquals(count($processorList), 1);
+        $this->assertTrue(array_key_exists("processorTest", $processorList));
     }
 
     public function testChainExceptions()
@@ -107,8 +107,8 @@ class ChainManagerTest extends WebTestCase
                 'class' => 'Kitpages\ChainBundle\KitpagesChainBundle'
             )
         );
-        $commandManager = new CommandManager(array(), $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+        $processorManager = new ProcessorManager(array(), $this->container);
+        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         try {
             $chainTest = $chainManager->getChain('ChainThatDoesNotExist');
@@ -125,56 +125,56 @@ class ChainManagerTest extends WebTestCase
         }
     }
 
-    public function testWithTwoCommands()
+    public function testWithTwoProcessors()
     {
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'command_list' => array(
-                    'commandTest' => array()
+                'processor_list' => array(
+                    'processorTest' => array()
                 )
             )
         );
 
-        $commandListConfig = array(
-            'commandTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample'
+        $processorListConfig = array(
+            'processorTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             ),
-            'commandTest2' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample'
+            'processorTest2' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute, "original");
     }
 
-    public function testWithParameterCommand()
+    public function testWithParameterProcessor()
     {
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'command_list' => array(
-                    'commandTest' => array()
+                'processor_list' => array(
+                    'processorTest' => array()
                 )
             )
         );
 
-        $commandListConfig = array(
-            'commandTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample',
+        $processorListConfig = array(
+            'processorTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
                 'parameter_list' => array(
                     'return' => "changed"
                 )
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -186,8 +186,8 @@ class ChainManagerTest extends WebTestCase
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'command_list' => array(
-                    'commandTest' => array(
+                'processor_list' => array(
+                    'processorTest' => array(
                         'parameter_list' => array(
                             'return' => "ChangedByChain"
                         )
@@ -196,17 +196,17 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandListConfig = array(
-            'commandTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample',
+        $processorListConfig = array(
+            'processorTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
                 'parameter_list' => array(
-                    'return' => "ChangedByCommand"
+                    'return' => "ChangedByProcessor"
                 )
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -218,22 +218,22 @@ class ChainManagerTest extends WebTestCase
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'command_list' => array(
-                    'commandTest' => array(
-                        'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample2'
+                'processor_list' => array(
+                    'processorTest' => array(
+                        'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample2'
                     )
                 )
             )
         );
 
-        $commandListConfig = array(
-            'commandTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample'
+        $processorListConfig = array(
+            'processorTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -246,8 +246,8 @@ class ChainManagerTest extends WebTestCase
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => 'Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'command_list' => array(
-                    'commandTest' => array(
+                'processor_list' => array(
+                    'processorTest' => array(
                         'parameter_list' => array(
                             'return' => "ChangedByChain"
                         )
@@ -256,22 +256,22 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $commandListConfig = array(
-            'commandTest' => array(
-                'class' => 'Kitpages\ChainBundle\Tests\Sample\CommandSample',
+        $processorListConfig = array(
+            'processorTest' => array(
+                'class' => 'Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
                 'parameter_list' => array(
-                    'return' => "ChangedByCommand"
+                    'return' => "ChangedByProcessor"
                 )
             )
         );
 
-        $commandManager = new CommandManager($commandListConfig, $this->container);
-        $chainManager = new ChainManager($chainListConfig, $commandManager, $this->logger);
+        $processorManager = new ProcessorManager($processorListConfig, $this->container);
+        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
-        $commandList = $chainTest->getCommandList();
-        $commandList['commandTest']->setParameter('return', "ChangedManualy");
-        $chainTest->setCommandList($commandList);
+        $processorList = $chainTest->getProcessorList();
+        $processorList['processorTest']->setParameter('return', "ChangedManualy");
+        $chainTest->setProcessorList($processorList);
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute, "ChangedManualy");
     }

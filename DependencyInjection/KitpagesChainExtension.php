@@ -29,7 +29,7 @@ class KitpagesChainExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         $this->remapParameters($config, $container, array(
-            'command_list'  => 'kitpages_chain.command_list',
+            'processor_list'  => 'kitpages_chain.processor_list',
             'chain_list'  => 'kitpages_chain.chain_list'
         ));
 

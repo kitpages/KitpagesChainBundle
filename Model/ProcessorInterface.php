@@ -3,7 +3,7 @@ namespace Kitpages\ChainBundle\Model;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-interface CommandInterface
+interface ProcessorInterface
 {
     public function setParameter($key, $value);
 

@@ -1,42 +1,42 @@
 kitpages_chain:
-    command_list:
-        CommandSample:
-            class: '\Kitpages\ChainBundle\Tests\Sample\CommandSample'
+    processor_list:
+        ProcessorSample:
+            class: '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
             parameter_list:
-                return: 'changedByCommandConfig1'
-        CommandSampleOriginal:
-            class: '\Kitpages\ChainBundle\Tests\Sample\CommandSample'
+                return: 'changedByProcessorConfig1'
+        ProcessorSampleOriginal:
+            class: '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
 
     chain_list:
         StandardChain:
-            command_list:
-                CommandSample: ~
+            processor_list:
+                ProcessorSample: ~
 
-        StandardChainAndCommandParameter:
-            command_list:
-                CommandSample:
+        StandardChainAndProcessorParameter:
+            processor_list:
+                ProcessorSample:
                     parameter_list:
-                        return: 'ResultStandardChainAndCommandParameter'
+                        return: 'ResultStandardChainAndProcessorParameter'
 
-        CustomChainAndCommandParameter:
+        CustomChainAndProcessorParameter:
             class: '\Kitpages\ChainBundle\Tests\Sample\ChainSample'
-            command_list:
-                CommandSample:
+            processor_list:
+                ProcessorSample:
                     parameter_list:
-                        return: 'ResultCustomChainAndCommandParameter'
+                        return: 'ResultCustomChainAndProcessorParameter'
 
-        CustomChainAndTwoCommands:
+        CustomChainAndTwoProcessors:
             class: '\Kitpages\ChainBundle\Tests\Sample\ChainSample'
-            command_list:
-                CommandSample: ~
-                CommandSampleOriginal: ~
+            processor_list:
+                ProcessorSample: ~
+                ProcessorSampleOriginal: ~
 
-        StandardChainAndNewCommand:
-            command_list:
-                MyNewCommand:
-                    class: '\Kitpages\ChainBundle\Tests\Sample\CommandSample'
+        StandardChainAndNewProcessor:
+            processor_list:
+                MyNewProcessor:
+                    class: '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
                     parameter_list:
-                        return: 'ResultStandardChainAndNewCommand'
+                        return: 'ResultStandardChainAndNewProcessor'
 
 
 framework:

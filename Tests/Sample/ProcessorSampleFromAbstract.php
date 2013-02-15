@@ -1,10 +1,10 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Model\CommandAbstract;
+use Kitpages\ChainBundle\Model\ProcessorAbstract;
 
-class CommandSampleFromAbstract
-    extends CommandAbstract
+class ProcessorSampleFromAbstract
+    extends ProcessorAbstract
 {
     public function execute()
     {
