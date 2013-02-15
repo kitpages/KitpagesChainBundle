@@ -29,68 +29,53 @@ class ProcessorManager
     {
         $processor = null;
 
-        // if processor name exists in processor list config
+        $processorFinalConfig = array();
+
         if (isset($this->processorList[$processorName])) {
-            $processorManagerConfig = $this->processorList[$processorName];
-
-            // instanciate class
-            if (isset($processorManagerConfig['class'])) {
-                $className = $processorManagerConfig['class'];
-            }
-            if (isset($processorConfig['class'])) {
-                $className = $processorConfig['class'];
-            }
-            if (!class_exists($className)) {
-                throw new ChainException("class $className doesn't exist");
-            }
-            $processor = new $className();
-            if (! $processor instanceof ProcessorInterface) {
-                throw new ChainException("Processor class $className doesn't implements ProcessorInterface");
-            }
-
-
-            // inject DIC
-            $processor->setContainer($this->container);
-
-            // inject parameters from processor config
-            if (isset($processorManagerConfig['parameter_list']) && is_array($processorManagerConfig['parameter_list'])) {
-                foreach($processorManagerConfig['parameter_list'] as $key => $val) {
-                    $processor->setParameter($key, $val);
-                }
-            }
-
-            // inject parameters from chain config or directly injected
-            if (isset($processorConfig['parameter_list']) && is_array($processorConfig['parameter_list'])) {
-                foreach($processorConfig['parameter_list'] as $key => $val) {
-                    $processor->setParameter($key, $val);
-                }
-            }
-            return $processor;
+            $processorFinalConfig = $this->processorList[$processorName];
         }
+        $processorFinalConfig = $this->customMerge($processorFinalConfig, $processorConfig);
 
         // processor name is only defined in chain config
-        if (!isset($processorConfig['class'])) {
+        if (!isset($processorFinalConfig['class'])) {
             throw new ChainException("unknown processorName and class undefined in config");
         }
+        $className = $processorFinalConfig['class'];
 
-        if (!class_exists($processorConfig['class'])) {
-            throw new ChainException("class ".$processorConfig['class']." doesn't exists");
+        if (!class_exists($className)) {
+            throw new ChainException("class ".$className." doesn't exists");
         }
 
-        $processor = new $processorConfig['class']();
+        $processor = new $className();
 
         if (! $processor instanceof ProcessorInterface) {
-            throw new ChainException("Processor class ".$processorConfig['class']." doesn't implements ProcessorInterface");
+            throw new ChainException("Processor class ".$className." doesn't implements ProcessorInterface");
         }
 
+        // inject DIC
         $processor->setContainer($this->container);
-        if (isset($processorConfig['parameter_list']) && is_array($processorConfig['parameter_list'])) {
-            foreach($processorConfig['parameter_list'] as $key => $val) {
+
+        // set parameters
+        if (isset($processorFinalConfig['parameter_list']) && is_array($processorFinalConfig['parameter_list'])) {
+            foreach($processorFinalConfig['parameter_list'] as $key => $val) {
                 $processor->setParameter($key, $val);
             }
         }
 
         return $processor;
+    }
+
+    protected function customMerge($tab1, $tab2)
+    {
+        $res = $tab1;
+        foreach ($tab2 as $key => $val) {
+            if (isset($res[$key]) && is_array($res[$key]) && is_array($val)) {
+                $res[$key] = $this->customMerge($res[$key], $val);
+                continue;
+            }
+            $res[$key] = $val;
+        }
+        return $res;
     }
 
 }
