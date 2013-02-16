@@ -68,7 +68,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "original");
+        $this->assertEquals($resultExecute, "original");
     }
 
     public function testChainWithoutClassConfig()
@@ -92,7 +92,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "original");
+        $this->assertEquals($resultExecute, "original");
 
         $stepList = $chainTest->getStepList();
         $this->assertEquals(count($stepList), 1);
@@ -152,7 +152,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "original");
+        $this->assertEquals($resultExecute, "original");
     }
 
     public function testWithParameterStep()
@@ -180,7 +180,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "changed");
+        $this->assertEquals($resultExecute, "changed");
     }
 
     public function testWithParameterChangedInChain()
@@ -212,7 +212,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "ChangedByChain");
+        $this->assertEquals($resultExecute, "ChangedByChain");
     }
 
     public function testWithClassChangedInChain()
@@ -239,7 +239,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "originalSample2");
+        $this->assertEquals($resultExecute, "originalSample2");
     }
 
     public function testWithParameterModifyPhpunit()
@@ -275,7 +275,7 @@ class ChainManagerTest extends WebTestCase
         $stepList['stepTest']->setParameter('return', "ChangedManualy");
         $chainTest->setStepList($stepList);
         $resultExecute = $chainTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "ChangedManualy");
+        $this->assertEquals($resultExecute, "ChangedManualy");
     }
 
 

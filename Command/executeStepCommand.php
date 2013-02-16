@@ -36,7 +36,7 @@ EOT
         );
         $stepManager = $this->getContainer()->get('kitpages_chain.step');
         $step = $stepManager->getStep($stepName, $stepConfig);
-        $output->writeln("StepName: $stepName; output=".$step->execute()->getReturnValue()."\n");
+        $output->writeln("StepName: $stepName; output=".$step->execute()."\n");
     }
 
 

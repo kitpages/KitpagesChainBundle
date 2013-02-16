@@ -27,7 +27,7 @@ class StepManagerTest extends WebTestCase
 
         $stepTest = $stepManager->getStep('stepTest');
         $resultExecute = $stepTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "original");
+        $this->assertEquals($resultExecute, "original");
     }
 
     public function testStepWithParameter()
@@ -46,7 +46,7 @@ class StepManagerTest extends WebTestCase
 
         $stepTest = $stepManager->getStep('stepTest');
         $resultExecute = $stepTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "changed");
+        $this->assertEquals($resultExecute, "changed");
     }
 
     public function testStepExceptions()
@@ -128,7 +128,7 @@ class StepManagerTest extends WebTestCase
         $stepTest = $stepManager->getStep('stepTest');
         $stepTest->setParameter('return', "changed2");
         $resultExecute = $stepTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "changed2");
+        $this->assertEquals($resultExecute, "changed2");
     }
 
     public function testStepWithConfigChangedParameter()
@@ -153,7 +153,7 @@ class StepManagerTest extends WebTestCase
 
         $stepTest = $stepManager->getStep('stepTest', $customChangedConfig);
         $resultExecute = $stepTest->execute();
-        $this->assertEquals($resultExecute->getReturnValue(), "configChanged");
+        $this->assertEquals($resultExecute, "configChanged");
     }
 
 }

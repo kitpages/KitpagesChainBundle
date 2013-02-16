@@ -37,7 +37,7 @@ class <<shortClassName>>
             $event->setReturnValue(parent::execute($event));
         }
         $this->__chainProxyEventDispatcher->dispatch(KitpagesChainEvents::AFTER_PROCESSOR_EXECUTE, $event);
-        return $event;
+        return $event->getReturnValue();
     }
 
     ////
