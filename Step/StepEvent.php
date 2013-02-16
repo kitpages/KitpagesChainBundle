@@ -4,14 +4,14 @@
  * Date: 15/02/13
  */
 
-namespace Kitpages\ChainBundle\Processor;
+namespace Kitpages\ChainBundle\Step;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * This class is an event transmitted from processors to processors
+ * This class is an event transmitted from steps to steps
  */
-class ProcessorEvent
+class StepEvent
     extends Event
 {
     protected $data = array();

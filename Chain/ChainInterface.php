@@ -1,13 +1,13 @@
 <?php
 namespace Kitpages\ChainBundle\Chain;
 
-use Kitpages\ChainBundle\Processor\ProcessorEvent;
+use Kitpages\ChainBundle\Step\StepEvent;
 
 interface ChainInterface
 {
-    public function execute(ProcessorEvent $event = null);
+    public function execute(StepEvent $event = null);
 
-    public function setProcessorList($processorList);
+    public function setStepList($stepList);
 
-    public function getProcessorList();
+    public function getStepList();
 }

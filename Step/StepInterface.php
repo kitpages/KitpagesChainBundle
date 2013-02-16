@@ -1,11 +1,11 @@
 <?php
-namespace Kitpages\ChainBundle\Processor;
+namespace Kitpages\ChainBundle\Step;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Kitpages\ChainBundle\Processor\ProcessorEvent;
+use Kitpages\ChainBundle\Step\StepEvent;
 
-interface ProcessorInterface
+interface StepInterface
 {
     /**
      * Used to receive parameters from the configuration
@@ -19,10 +19,10 @@ interface ProcessorInterface
     /**
      * method that executes the processing
      *
-     * @param ProcessorEvent $event
-     * @return ProcessorEvent : $event transformed
+     * @param StepEvent $event
+     * @return StepEvent : $event transformed
      */
-    public function execute(ProcessorEvent $event = null);
+    public function execute(StepEvent $event = null);
 
     /**
      * used to receive the DIC

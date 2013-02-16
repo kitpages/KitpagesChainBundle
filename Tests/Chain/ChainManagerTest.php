@@ -1,8 +1,8 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Chain;
 
-use Kitpages\ChainBundle\Tests\Sample\ProcessorSample;
-use Kitpages\ChainBundle\Processor\ProcessorManager;
+use Kitpages\ChainBundle\Tests\Sample\StepSample;
+use Kitpages\ChainBundle\Step\StepManager;
 use Kitpages\ChainBundle\Chain\ChainManager;
 use Kitpages\ChainBundle\ChainException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,50 +21,50 @@ class ChainManagerTest extends WebTestCase
         $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
     }
 
-    public function testChainCreationWithoutAnyProcessor()
+    public function testChainCreationWithoutAnyStep()
     {
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'processor_list' => array(
+                'step_list' => array(
                 )
             )
         );
 
-        $processorListConfig = array(
-            'processorTest' => array(
-                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample'
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
-        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+        $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute, null);
     }
 
-    public function testChainWithProcessor()
+    public function testChainWithStep()
     {
 
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'processor_list' => array(
-                    'processorTest' => array()
+                'step_list' => array(
+                    'stepTest' => array()
                 )
             )
         );
 
-        $processorListConfig = array(
-            'processorTest' => array(
-                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample'
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
-        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+        $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -75,28 +75,28 @@ class ChainManagerTest extends WebTestCase
     {
         $chainListConfig = array(
             'chainTest' => array(
-                'processor_list' => array(
-                    "processorTest" => array()
+                'step_list' => array(
+                    "stepTest" => array()
                 )
             )
         );
 
-        $processorListConfig = array(
-            'processorTest' => array(
-                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample'
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
-        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+        $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute->getReturnValue(), "original");
 
-        $processorList = $chainTest->getProcessorList();
-        $this->assertEquals(count($processorList), 1);
-        $this->assertTrue(array_key_exists("processorTest", $processorList));
+        $stepList = $chainTest->getStepList();
+        $this->assertEquals(count($stepList), 1);
+        $this->assertTrue(array_key_exists("stepTest", $stepList));
     }
 
     public function testChainExceptions()
@@ -109,8 +109,8 @@ class ChainManagerTest extends WebTestCase
                 'class' => '\Kitpages\ChainBundle\KitpagesChainBundle'
             )
         );
-        $processorManager = new ProcessorManager(array(), $this->container, $this->eventDispatcher);
-        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
+        $stepManager = new StepManager(array(), $this->container, $this->eventDispatcher);
+        $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         try {
             $chainTest = $chainManager->getChain('ChainThatDoesNotExist');
@@ -127,56 +127,56 @@ class ChainManagerTest extends WebTestCase
         }
     }
 
-    public function testWithTwoProcessors()
+    public function testWithTwoSteps()
     {
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'processor_list' => array(
-                    'processorTest' => array()
+                'step_list' => array(
+                    'stepTest' => array()
                 )
             )
         );
 
-        $processorListConfig = array(
-            'processorTest' => array(
-                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample'
             ),
-            'processorTest2' => array(
-                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+            'stepTest2' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample'
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
-        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+        $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute->getReturnValue(), "original");
     }
 
-    public function testWithParameterProcessor()
+    public function testWithParameterStep()
     {
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'processor_list' => array(
-                    'processorTest' => array()
+                'step_list' => array(
+                    'stepTest' => array()
                 )
             )
         );
 
-        $processorListConfig = array(
-            'processorTest' => array(
-                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample',
                 'parameter_list' => array(
                     'return' => "changed"
                 )
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
-        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+        $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -188,8 +188,8 @@ class ChainManagerTest extends WebTestCase
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'processor_list' => array(
-                    'processorTest' => array(
+                'step_list' => array(
+                    'stepTest' => array(
                         'parameter_list' => array(
                             'return' => "ChangedByChain"
                         )
@@ -198,17 +198,17 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorListConfig = array(
-            'processorTest' => array(
-                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample',
                 'parameter_list' => array(
-                    'return' => "ChangedByProcessor"
+                    'return' => "ChangedByStep"
                 )
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
-        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+        $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -220,22 +220,22 @@ class ChainManagerTest extends WebTestCase
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'processor_list' => array(
-                    'processorTest' => array(
-                        'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample2'
+                'step_list' => array(
+                    'stepTest' => array(
+                        'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample2'
                     )
                 )
             )
         );
 
-        $processorListConfig = array(
-            'processorTest' => array(
-                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample'
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
-        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+        $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
         $resultExecute = $chainTest->execute();
@@ -248,8 +248,8 @@ class ChainManagerTest extends WebTestCase
         $chainListConfig = array(
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
-                'processor_list' => array(
-                    'processorTest' => array(
+                'step_list' => array(
+                    'stepTest' => array(
                         'parameter_list' => array(
                             'return' => "ChangedByChain"
                         )
@@ -258,22 +258,22 @@ class ChainManagerTest extends WebTestCase
             )
         );
 
-        $processorListConfig = array(
-            'processorTest' => array(
-                'class' => '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample',
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample',
                 'parameter_list' => array(
-                    'return' => "ChangedByProcessor"
+                    'return' => "ChangedByStep"
                 )
             )
         );
 
-        $processorManager = new ProcessorManager($processorListConfig, $this->container, $this->eventDispatcher);
-        $chainManager = new ChainManager($chainListConfig, $processorManager, $this->logger);
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+        $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         $chainTest = $chainManager->getChain('chainTest');
-        $processorList = $chainTest->getProcessorList();
-        $processorList['processorTest']->setParameter('return', "ChangedManualy");
-        $chainTest->setProcessorList($processorList);
+        $stepList = $chainTest->getStepList();
+        $stepList['stepTest']->setParameter('return', "ChangedManualy");
+        $chainTest->setStepList($stepList);
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute->getReturnValue(), "ChangedManualy");
     }

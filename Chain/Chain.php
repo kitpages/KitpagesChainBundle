@@ -2,30 +2,30 @@
 namespace Kitpages\ChainBundle\Chain;
 
 use Kitpages\ChainBundle\Chain\ChainInterface;
-use Kitpages\ChainBundle\Processor\ProcessorEvent;
+use Kitpages\ChainBundle\Step\StepEvent;
 
 class Chain implements ChainInterface
 {
 
-    protected $processorList = null;
+    protected $stepList = null;
 
-    public function setProcessorList($processorList)
+    public function setStepList($stepList)
     {
-        $this->processorList = $processorList;
+        $this->stepList = $stepList;
     }
 
-    public function getProcessorList()
+    public function getStepList()
     {
-        return $this->processorList;
+        return $this->stepList;
     }
 
-    public function execute(ProcessorEvent $event = null)
+    public function execute(StepEvent $event = null)
     {
         if ($event == null) {
-            $event = new ProcessorEvent();
+            $event = new StepEvent();
         }
-        foreach($this->processorList as $processor) {
-            $result = $processor->execute($event);
+        foreach($this->stepList as $step) {
+            $result = $step->execute($event);
             if ($event->isPropagationStopped()) {
                 break;
             }

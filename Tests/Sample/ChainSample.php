@@ -3,32 +3,32 @@ namespace Kitpages\ChainBundle\Tests\Sample;
 
 use Kitpages\ChainBundle\Chain\ChainInterface;
 use Kitpages\ChainBundle\ChainException;
-use Kitpages\ChainBundle\Processor\ProcessorEvent;
+use Kitpages\ChainBundle\Step\StepEvent;
 
 class ChainSample implements ChainInterface
 {
-    private $processorList = array();
+    private $stepList = array();
 
-    public function execute(ProcessorEvent $event = null)
+    public function execute(StepEvent $event = null)
     {
         $res = null;
         if ($event == null) {
-            $event = new ProcessorEvent();
+            $event = new StepEvent();
         }
-        foreach($this->processorList as $slug => $processor) {
-            $res = $processor->execute($event);
+        foreach($this->stepList as $slug => $step) {
+            $res = $step->execute($event);
         }
         //echo "ChainSample execute() => ret=$res\n";
         return $res;
     }
 
-    public function setProcessorList($processorList) {
-        $this->processorList = $processorList;
+    public function setStepList($stepList) {
+        $this->stepList = $stepList;
         return $this;
     }
 
-    public function getProcessorList()
+    public function getStepList()
     {
-        return $this->processorList;
+        return $this->stepList;
     }
 }

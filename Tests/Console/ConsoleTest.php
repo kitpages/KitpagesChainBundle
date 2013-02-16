@@ -9,17 +9,17 @@ class ConsoleTest extends CommandTestCase
     {
         $client = self::createClient();
 
-        $output = $this->runCommand($client, "kitpages:chain:run-processor ProcessorSample");
-        $this->assertContains('changedByProcessorConfig1', $output);
+        $output = $this->runCommand($client, "kitpages:chain:run-step StepSample");
+        $this->assertContains('changedByStepConfig1', $output);
 
-        $output = $this->runCommand($client, "kitpages:chain:run-processor ProcessorSampleOriginal");
+        $output = $this->runCommand($client, "kitpages:chain:run-step StepSampleOriginal");
         $this->assertContains('original', $output);
     }
     public function testRunCommandWithParameters()
     {
         $client = self::createClient();
 
-        $output = $this->runCommand($client, "kitpages:chain:run-processor ProcessorSample --p=return:titi");
+        $output = $this->runCommand($client, "kitpages:chain:run-step StepSample --p=return:titi");
         $this->assertContains('titi', $output);
     }
     public function testRunChainSimple()
@@ -27,23 +27,23 @@ class ConsoleTest extends CommandTestCase
         $client = self::createClient();
 
         $output = $this->runCommand($client, "kitpages:chain:run-chain StandardChain");
-        $this->assertContains('changedByProcessorConfig1', $output);
+        $this->assertContains('changedByStepConfig1', $output);
 
-        $output = $this->runCommand($client, "kitpages:chain:run-chain StandardChainAndProcessorParameter");
-        $this->assertContains('ResultStandardChainAndProcessorParameter', $output);
+        $output = $this->runCommand($client, "kitpages:chain:run-chain StandardChainAndStepParameter");
+        $this->assertContains('ResultStandardChainAndStepParameter', $output);
     }
 
     public function testRunChainComplex()
     {
         $client = self::createClient();
 
-        $output = $this->runCommand($client, "kitpages:chain:run-chain CustomChainAndProcessorParameter");
-        $this->assertContains('ResultCustomChainAndProcessorParameter', $output);
+        $output = $this->runCommand($client, "kitpages:chain:run-chain CustomChainAndStepParameter");
+        $this->assertContains('ResultCustomChainAndStepParameter', $output);
 
-        $output = $this->runCommand($client, "kitpages:chain:run-chain CustomChainAndTwoProcessors");
+        $output = $this->runCommand($client, "kitpages:chain:run-chain CustomChainAndTwoSteps");
         $this->assertContains('original', $output);
 
-        $output = $this->runCommand($client, "kitpages:chain:run-chain StandardChainAndNewProcessor");
-        $this->assertContains('ResultStandardChainAndNewProcessor', $output);
+        $output = $this->runCommand($client, "kitpages:chain:run-chain StandardChainAndNewStep");
+        $this->assertContains('ResultStandardChainAndNewStep', $output);
     }
 }

@@ -1,42 +1,42 @@
 kitpages_chain:
-    processor_list:
-        ProcessorSample:
-            class: '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+    step_list:
+        StepSample:
+            class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
             parameter_list:
-                return: 'changedByProcessorConfig1'
-        ProcessorSampleOriginal:
-            class: '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+                return: 'changedByStepConfig1'
+        StepSampleOriginal:
+            class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
 
     chain_list:
         StandardChain:
-            processor_list:
-                ProcessorSample: ~
+            step_list:
+                StepSample: ~
 
-        StandardChainAndProcessorParameter:
-            processor_list:
-                ProcessorSample:
+        StandardChainAndStepParameter:
+            step_list:
+                StepSample:
                     parameter_list:
-                        return: 'ResultStandardChainAndProcessorParameter'
+                        return: 'ResultStandardChainAndStepParameter'
 
-        CustomChainAndProcessorParameter:
+        CustomChainAndStepParameter:
             class: '\Kitpages\ChainBundle\Tests\Sample\ChainSample'
-            processor_list:
-                ProcessorSample:
+            step_list:
+                StepSample:
                     parameter_list:
-                        return: 'ResultCustomChainAndProcessorParameter'
+                        return: 'ResultCustomChainAndStepParameter'
 
-        CustomChainAndTwoProcessors:
+        CustomChainAndTwoSteps:
             class: '\Kitpages\ChainBundle\Tests\Sample\ChainSample'
-            processor_list:
-                ProcessorSample: ~
-                ProcessorSampleOriginal: ~
+            step_list:
+                StepSample: ~
+                StepSampleOriginal: ~
 
-        StandardChainAndNewProcessor:
-            processor_list:
-                MyNewProcessor:
-                    class: '\Kitpages\ChainBundle\Tests\Sample\ProcessorSample'
+        StandardChainAndNewStep:
+            step_list:
+                MyNewStep:
+                    class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
                     parameter_list:
-                        return: 'ResultStandardChainAndNewProcessor'
+                        return: 'ResultStandardChainAndNewStep'
 
 
 framework:

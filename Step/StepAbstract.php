@@ -1,10 +1,10 @@
 <?php
-namespace Kitpages\ChainBundle\Processor;
+namespace Kitpages\ChainBundle\Step;
 
-use Kitpages\ChainBundle\Processor\ProcessorInterface;
+use Kitpages\ChainBundle\Step\StepInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class ProcessorAbstract implements ProcessorInterface
+abstract class StepAbstract implements StepInterface
 {
     protected $container = null;
     protected $parameterList = array();

@@ -6,12 +6,12 @@
 namespace <<proxyNameSpace>>;
 
 use Kitpages\ChainBundle\Proxy\ProxyInterface;
-use Kitpages\ChainBundle\Processor\ProcessorEvent;
+use Kitpages\ChainBundle\Step\StepEvent;
 use Kitpages\ChainBundle\KitpagesChainEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * This class is a proxy around a processor method.
+ * This class is a proxy around a step method.
  * This proxy adds the following methods :
  * -
  *
@@ -26,10 +26,10 @@ class <<shortClassName>>
     ////
     // overidden methods
     ////
-    public function execute(ProcessorEvent $event = null)
+    public function execute(StepEvent $event = null)
     {
         if ($event == null) {
-            $event = new ProcessorEvent();
+            $event = new StepEvent();
         }
         $event->setReturnValue(null);
         $this->__chainProxyEventDispatcher->dispatch(KitpagesChainEvents::ON_PROCESSOR_EXECUTE, $event);

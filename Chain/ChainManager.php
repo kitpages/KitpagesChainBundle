@@ -1,31 +1,31 @@
 <?php
 namespace Kitpages\ChainBundle\Chain;
 
-use Kitpages\ChainBundle\Processor\ProcessorManager;
+use Kitpages\ChainBundle\Step\StepManager;
 use Kitpages\ChainBundle\ChainException;
 use Kitpages\ChainBundle\Chain\ChainInterface;
 
 class ChainManager
 {
 
-    protected $processorManager = null;
+    protected $stepManager = null;
     protected $chainConfigList = null;
 
     public function __construct(
         $chainConfigList,
-        ProcessorManager $processorManager
+        StepManager $stepManager
     )
     {
         $this->chainConfigList = $chainConfigList;
-        $this->processorManager = $processorManager;
+        $this->stepManager = $stepManager;
     }
 
     public function getChain($chainSlug)
     {
         $chainConfig = $this->chainConfigList[$chainSlug];
         // normalize chainConfig
-        if (!isset($chainConfig['processor_list'])) {
-            $chainConfig['processor_list'] = array();
+        if (!isset($chainConfig['step_list'])) {
+            $chainConfig['step_list'] = array();
         }
 
         // instanciate chain instance
@@ -41,19 +41,19 @@ class ChainManager
             throw new ChainException("Chain class $chainClass doesn't implements ChainInterface");
         }
 
-        // fill chain with processor list
-        $processorList = $this->initProcessorList($chainConfig['processor_list']);
-        $chain->setProcessorList($processorList);
+        // fill chain with step list
+        $stepList = $this->initStepList($chainConfig['step_list']);
+        $chain->setStepList($stepList);
         return $chain;
     }
 
-    public function initProcessorList($processorConfigList)
+    public function initStepList($stepConfigList)
     {
-        $processorList = array();
-        foreach($processorConfigList as $processorSlug => $processorConfig) {
-            $processor = $this->processorManager->getProcessor($processorSlug, $processorConfig);
-            $processorList[$processorSlug] =  $processor;
+        $stepList = array();
+        foreach($stepConfigList as $stepSlug => $stepConfig) {
+            $step = $this->stepManager->getStep($stepSlug, $stepConfig);
+            $stepList[$stepSlug] =  $step;
         }
-        return $processorList;
+        return $stepList;
     }
 }

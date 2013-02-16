@@ -24,7 +24,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('kitpages_chain');
 
-        $this->addProcessorListSection($rootNode);
+        $this->addStepListSection($rootNode);
         //$this->addChainListSection($rootNode);
 
         return $treeBuilder;
@@ -41,12 +41,12 @@ class Configuration implements ConfigurationInterface
      * @param ArrayNodeDefinition $node
      * @return void
      */
-    private function addProcessorListSection(ArrayNodeDefinition $node)
+    private function addStepListSection(ArrayNodeDefinition $node)
     {
         $node
             ->children()
-                ->arrayNode('processor_list')
-                    ->useAttributeAsKey('processor_slug')
+                ->arrayNode('step_list')
+                    ->useAttributeAsKey('step_slug')
                     ->prototype('array')
                         ->children()
                             ->scalarNode('class')
@@ -68,8 +68,8 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('class')
                                 ->defaultValue('\Kitpages\ChainBundle\Chain\Chain')
                             ->end()
-                            ->arrayNode('processor_list')
-                                ->useAttributeAsKey('processor_slug')
+                            ->arrayNode('step_list')
+                                ->useAttributeAsKey('step_slug')
                                 ->prototype('array')
                                     ->children()
                                         ->scalarNode('class')

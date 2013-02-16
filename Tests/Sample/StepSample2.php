@@ -1,16 +1,16 @@
 <?php
 namespace Kitpages\ChainBundle\Tests\Sample;
 
-use Kitpages\ChainBundle\Processor\ProcessorInterface;
-use Kitpages\ChainBundle\Processor\ProcessorEvent;
+use Kitpages\ChainBundle\Step\StepInterface;
+use Kitpages\ChainBundle\Step\StepEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ProcessorSample2 implements ProcessorInterface
+class StepSample2 implements StepInterface
 {
 
     public $parameterList = array('return' => "originalSample2");
 
-    public function execute(ProcessorEvent $event = null) {
+    public function execute(StepEvent $event = null) {
         return $this->parameterList['return'];
     }
 
