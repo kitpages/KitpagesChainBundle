@@ -139,7 +139,11 @@ class ChainManagerTest extends WebTestCase
                 'step_list' => array(
                     'stepTestLabel' => array(
                         'parent_shared_step_name' => 'stepTest'
+                    ),
+                    'stepTestLabel2' => array(
+                        'parent_shared_step_name' => 'stepTest'
                     )
+
                 )
             )
         );

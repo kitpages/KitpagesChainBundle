@@ -7,6 +7,7 @@
 namespace Kitpages\ChainBundle\Step;
 
 use Symfony\Component\EventDispatcher\Event;
+use Kitpages\ChainBundle\Step\StepInterface;
 
 /**
  * This class is an event transmitted from steps to steps
@@ -18,8 +19,10 @@ class StepEvent
     protected $isDefaultPrevented = false;
     protected $isPropagationStopped = false;
     protected $returnValue = null;
+
     protected $previousReturnValue = null;
     protected $currentReturnValue = null;
+    protected $step = null;
 
     public function preventDefault()
     {
@@ -46,6 +49,18 @@ class StepEvent
         $this->data[$key] = $val;
     }
 
+
+    public function get($key)
+    {
+        if (!array_key_exists($key, $this->data)) {
+            return null;
+        }
+        return $this->data[$key];
+    }
+
+    ////
+    // Step specific methods
+    ////
     public function setPreviousReturnValue($ret)
     {
         $this->previousReturnValue = $ret;
@@ -65,11 +80,16 @@ class StepEvent
         return $this->currentReturnValue;
     }
 
-    public function get($key)
+    public function setStep(StepInterface $step = null)
     {
-        if (!array_key_exists($key, $this->data)) {
-            return null;
-        }
-        return $this->data[$key];
+        $this->step = $step;
+    }
+
+    /**
+     * @return StepInterface
+     */
+    public function getStep()
+    {
+        return $this->step;
     }
 }

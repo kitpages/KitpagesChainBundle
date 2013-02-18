@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
+use Kitpages\ChainBundle\Step\StepEvent;
+
 class executeChainCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -30,7 +32,10 @@ EOT
 
         $chainManager = $this->getContainer()->get('kitpages_chain.chain');
         $chain = $chainManager->getChain($chainName);
-        $output->writeln("ChainName: $chainName; output=".$chain->execute());
+
+        $event = new StepEvent();
+
+        $output->writeln("ChainName: $chainName; output=".$chain->execute($event));
     }
 
 

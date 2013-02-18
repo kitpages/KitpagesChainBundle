@@ -31,6 +31,8 @@ class <<shortClassName>>
         if ($event == null) {
             $event = new StepEvent();
         }
+        $event->setStep($this);
+        $event->setPreviousReturnValue($event->getReturnValue());
         $event->setReturnValue(null);
         $this->__chainProxyEventDispatcher->dispatch(KitpagesChainEvents::ON_PROCESSOR_EXECUTE, $event);
         if (!$event->isDefaultPrevented()) {

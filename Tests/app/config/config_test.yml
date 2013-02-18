@@ -7,6 +7,12 @@ kitpages_chain:
         StepSampleOriginal:
             class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
 
+        CustomPreventDefault:
+            class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
+            parameter_list:
+                throw_exception: true
+
+
     chain_list:
         StandardChain:
             step_list:
@@ -36,6 +42,18 @@ kitpages_chain:
                 StepSampleOriginal:
                     parent_shared_step_name: StepSampleOriginal
 
+        CustomStopPropagation:
+            step_list:
+                StepSample:
+                    parent_shared_step_name: StepSample
+                    parameter_list:
+                        return: 'ResultStopPropagation'
+                        isPropagationStopped: true
+                StepSampleOriginal:
+                    parent_shared_step_name: StepSampleOriginal
+                    parameter_list:
+                        return: 'ResultPropagationNotStopped'
+
         StandardChainAndNewStep:
             step_list:
                 MyNewStep:
@@ -44,6 +62,12 @@ kitpages_chain:
                     parameter_list:
                         return: 'ResultStandardChainAndNewStep'
 
+services:
+    stepListener:
+        class: Kitpages\ChainBundle\Tests\Sample\StepListener
+        tags:
+            - { name: kernel.event_listener, event: kitpages_chain.on_step_execute, method: onStepExecute }
+            - { name: kernel.event_listener, event: kitpages_chain.after_step_execute, method: afterStepExecute }
 
 framework:
     secret: "test"

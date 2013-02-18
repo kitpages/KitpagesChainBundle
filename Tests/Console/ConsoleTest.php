@@ -2,6 +2,7 @@
 namespace Kitpages\ChainBundle\Tests\Console;
 
 use Kitpages\ChainBundle\Tests\TestUtil\CommandTestCase;
+use Kitpages\ChainBundle\ChainException;
 
 class ConsoleTest extends CommandTestCase
 {
@@ -46,4 +47,24 @@ class ConsoleTest extends CommandTestCase
         $output = $this->runCommand($client, "kitpages:chain:run-chain StandardChainAndNewStep");
         $this->assertContains('ResultStandardChainAndNewStep', $output);
     }
+
+    public function testStopPropagation()
+    {
+        $client = self::createClient();
+
+        $output = $this->runCommand($client, "kitpages:chain:run-chain CustomStopPropagation");
+        $this->assertContains('ResultStopPropagation', $output);
+    }
+
+    public function testPreventDefault()
+    {
+        $client = self::createClient();
+
+        $output = $this->runCommand($client, "kitpages:chain:run-step CustomPreventDefault");
+        $this->assertContains("unit test exception", $output);
+
+        $output = $this->runCommand($client, "kitpages:chain:run-step CustomPreventDefault --p=isDefaultPrevented:true");
+        $this->assertContains("output=null", $output);
+    }
+
 }
