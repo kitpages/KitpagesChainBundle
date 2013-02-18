@@ -72,7 +72,7 @@ class Configuration implements ConfigurationInterface
                                 ->useAttributeAsKey('step_name')
                                 ->prototype('array')
                                     ->children()
-                                        ->scalarNode('parent_shared_step_name')
+                                        ->scalarNode('parent_shared_step')
                                         ->end()
                                         ->scalarNode('class')
                                             ->cannotBeEmpty()

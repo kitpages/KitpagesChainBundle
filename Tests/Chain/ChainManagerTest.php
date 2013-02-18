@@ -53,7 +53,7 @@ class ChainManagerTest extends WebTestCase
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
                     'stepTestLabel' => array(
-                        'parent_shared_step_name' => 'stepTest'
+                        'parent_shared_step' => 'stepTest'
                     )
                 )
             )
@@ -79,7 +79,7 @@ class ChainManagerTest extends WebTestCase
             'chainTest' => array(
                 'step_list' => array(
                     "stepTestLabel" => array(
-                        'parent_shared_step_name' => 'stepTest'
+                        'parent_shared_step' => 'stepTest'
                     )
                 )
             )
@@ -138,10 +138,10 @@ class ChainManagerTest extends WebTestCase
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
                     'stepTestLabel' => array(
-                        'parent_shared_step_name' => 'stepTest'
+                        'parent_shared_step' => 'stepTest'
                     ),
                     'stepTestLabel2' => array(
-                        'parent_shared_step_name' => 'stepTest'
+                        'parent_shared_step' => 'stepTest'
                     )
 
                 )
@@ -172,7 +172,7 @@ class ChainManagerTest extends WebTestCase
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
                     'stepTestLabel' => array(
-                        'parent_shared_step_name' => 'stepTest'
+                        'parent_shared_step' => 'stepTest'
                     )
                 )
             )
@@ -202,7 +202,7 @@ class ChainManagerTest extends WebTestCase
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
                     'stepTestLabel' => array(
-                        'parent_shared_step_name' => 'stepTest',
+                        'parent_shared_step' => 'stepTest',
                         'parameter_list' => array(
                             'return' => "ChangedByChain"
                         )
@@ -263,7 +263,7 @@ class ChainManagerTest extends WebTestCase
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
                     'stepTestLabel' => array(
-                        'parent_shared_step_name' => 'stepTest',
+                        'parent_shared_step' => 'stepTest',
                         'parameter_list' => array(
                             'return' => "ChangedByChain"
                         )

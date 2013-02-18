@@ -17,12 +17,12 @@ kitpages_chain:
         StandardChain:
             step_list:
                 StepSample:
-                    parent_shared_step_name: StepSample
+                    parent_shared_step: StepSample
 
         StandardChainAndStepParameter:
             step_list:
                 StepSample:
-                    parent_shared_step_name: StepSample
+                    parent_shared_step: StepSample
                     parameter_list:
                         return: 'ResultStandardChainAndStepParameter'
 
@@ -30,7 +30,7 @@ kitpages_chain:
             class: '\Kitpages\ChainBundle\Tests\Sample\ChainSample'
             step_list:
                 StepSample:
-                    parent_shared_step_name: StepSample
+                    parent_shared_step: StepSample
                     parameter_list:
                         return: 'ResultCustomChainAndStepParameter'
 
@@ -38,26 +38,26 @@ kitpages_chain:
             class: '\Kitpages\ChainBundle\Tests\Sample\ChainSample'
             step_list:
                 StepSample:
-                    parent_shared_step_name: StepSample
+                    parent_shared_step: StepSample
                 StepSampleOriginal:
-                    parent_shared_step_name: StepSampleOriginal
+                    parent_shared_step: StepSampleOriginal
 
         CustomStopPropagation:
             step_list:
                 StepSample:
-                    parent_shared_step_name: StepSample
+                    parent_shared_step: StepSample
                     parameter_list:
                         return: 'ResultStopPropagation'
                         isPropagationStopped: true
                 StepSampleOriginal:
-                    parent_shared_step_name: StepSampleOriginal
+                    parent_shared_step: StepSampleOriginal
                     parameter_list:
                         return: 'ResultPropagationNotStopped'
 
         StandardChainAndNewStep:
             step_list:
                 MyNewStep:
-                    parent_shared_step_name: ~
+                    parent_shared_step: ~
                     class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
                     parameter_list:
                         return: 'ResultStandardChainAndNewStep'

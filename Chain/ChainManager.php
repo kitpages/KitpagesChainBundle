@@ -52,8 +52,8 @@ class ChainManager
         $stepList = array();
         foreach($stepConfigList as $stepName => $stepConfig) {
             $parentSharedStepName = null;
-            if (isset($stepConfig["parent_shared_step_name"])) {
-                $parentSharedStepName = $stepConfig["parent_shared_step_name"];
+            if (isset($stepConfig["parent_shared_step"])) {
+                $parentSharedStepName = $stepConfig["parent_shared_step"];
             }
             $step = $this->stepManager->getStep($parentSharedStepName, $stepConfig);
             $stepList[$stepName] =  $step;
