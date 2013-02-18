@@ -9,11 +9,11 @@ from PHP.
 
 ## Versions
 
-
+02/18/2013 : v1.0.0 first stable version
 
 ## Actual state
 
-This bundle is beta.
+This bundle is stable, tested and under travis-ci.
 
 ## Installation
 
