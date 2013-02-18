@@ -15,7 +15,7 @@
             <argument type="service" id="kitpages_chain.step"/>
         </service>
         <service id="kitpages_chain.step" class="%kitpages_chain.step.manager%" >
-            <argument>%kitpages_chain.step_list%</argument>
+            <argument>%kitpages_chain.shared_step_list%</argument>
             <argument type="service" id="service_container" />
             <argument type="service" id="event_dispatcher"/>
         </service>

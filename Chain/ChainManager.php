@@ -20,9 +20,9 @@ class ChainManager
         $this->stepManager = $stepManager;
     }
 
-    public function getChain($chainSlug)
+    public function getChain($chainName)
     {
-        $chainConfig = $this->chainConfigList[$chainSlug];
+        $chainConfig = $this->chainConfigList[$chainName];
         // normalize chainConfig
         if (!isset($chainConfig['step_list'])) {
             $chainConfig['step_list'] = array();
@@ -50,9 +50,13 @@ class ChainManager
     public function initStepList($stepConfigList)
     {
         $stepList = array();
-        foreach($stepConfigList as $stepSlug => $stepConfig) {
-            $step = $this->stepManager->getStep($stepSlug, $stepConfig);
-            $stepList[$stepSlug] =  $step;
+        foreach($stepConfigList as $stepName => $stepConfig) {
+            $parentSharedStepName = null;
+            if (isset($stepConfig["parent_shared_step_name"])) {
+                $parentSharedStepName = $stepConfig["parent_shared_step_name"];
+            }
+            $step = $this->stepManager->getStep($parentSharedStepName, $stepConfig);
+            $stepList[$stepName] =  $step;
         }
         return $stepList;
     }

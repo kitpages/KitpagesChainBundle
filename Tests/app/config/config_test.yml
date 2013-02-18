@@ -1,5 +1,5 @@
 kitpages_chain:
-    step_list:
+    shared_step_list:
         StepSample:
             class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
             parameter_list:
@@ -10,11 +10,13 @@ kitpages_chain:
     chain_list:
         StandardChain:
             step_list:
-                StepSample: ~
+                StepSample:
+                    parent_shared_step_name: StepSample
 
         StandardChainAndStepParameter:
             step_list:
                 StepSample:
+                    parent_shared_step_name: StepSample
                     parameter_list:
                         return: 'ResultStandardChainAndStepParameter'
 
@@ -22,18 +24,22 @@ kitpages_chain:
             class: '\Kitpages\ChainBundle\Tests\Sample\ChainSample'
             step_list:
                 StepSample:
+                    parent_shared_step_name: StepSample
                     parameter_list:
                         return: 'ResultCustomChainAndStepParameter'
 
         CustomChainAndTwoSteps:
             class: '\Kitpages\ChainBundle\Tests\Sample\ChainSample'
             step_list:
-                StepSample: ~
-                StepSampleOriginal: ~
+                StepSample:
+                    parent_shared_step_name: StepSample
+                StepSampleOriginal:
+                    parent_shared_step_name: StepSampleOriginal
 
         StandardChainAndNewStep:
             step_list:
                 MyNewStep:
+                    parent_shared_step_name: ~
                     class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
                     parameter_list:
                         return: 'ResultStandardChainAndNewStep'

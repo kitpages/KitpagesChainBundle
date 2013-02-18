@@ -52,7 +52,9 @@ class ChainManagerTest extends WebTestCase
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
-                    'stepTest' => array()
+                    'stepTestLabel' => array(
+                        'parent_shared_step_name' => 'stepTest'
+                    )
                 )
             )
         );
@@ -76,7 +78,9 @@ class ChainManagerTest extends WebTestCase
         $chainListConfig = array(
             'chainTest' => array(
                 'step_list' => array(
-                    "stepTest" => array()
+                    "stepTestLabel" => array(
+                        'parent_shared_step_name' => 'stepTest'
+                    )
                 )
             )
         );
@@ -96,16 +100,16 @@ class ChainManagerTest extends WebTestCase
 
         $stepList = $chainTest->getStepList();
         $this->assertEquals(count($stepList), 1);
-        $this->assertTrue(array_key_exists("stepTest", $stepList));
+        $this->assertTrue(array_key_exists("stepTestLabel", $stepList));
     }
 
     public function testChainExceptions()
     {
         $chainListConfig = array(
-            'ChainThatDoesNotExist' => array(
+            'ChainThatDoesNotExistLabel' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainThatDoesNotExist'
             ),
-            'ChainWithoutInterface' => array(
+            'ChainWithoutInterfaceLabel' => array(
                 'class' => '\Kitpages\ChainBundle\KitpagesChainBundle'
             )
         );
@@ -113,15 +117,15 @@ class ChainManagerTest extends WebTestCase
         $chainManager = new ChainManager($chainListConfig, $stepManager, $this->logger);
 
         try {
-            $chainTest = $chainManager->getChain('ChainThatDoesNotExist');
-            $this->fail('No exception raised for ChainThatDoesNotExist');
+            $chainTest = $chainManager->getChain('ChainThatDoesNotExistLabel');
+            $this->fail('No exception raised for ChainThatDoesNotExistLabel');
         } catch (ChainException $e) {
             $this->assertTrue(true);
         }
 
         try {
-            $chainTest = $chainManager->getChain('ChainWithoutInterface');
-            $this->fail('No exception raised for ChainWithoutInterface');
+            $chainTest = $chainManager->getChain('ChainWithoutInterfaceLabel');
+            $this->fail('No exception raised for ChainWithoutInterfaceLabel');
         } catch (ChainException $e) {
             $this->assertTrue(true);
         }
@@ -133,7 +137,9 @@ class ChainManagerTest extends WebTestCase
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
-                    'stepTest' => array()
+                    'stepTestLabel' => array(
+                        'parent_shared_step_name' => 'stepTest'
+                    )
                 )
             )
         );
@@ -161,7 +167,9 @@ class ChainManagerTest extends WebTestCase
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
-                    'stepTest' => array()
+                    'stepTestLabel' => array(
+                        'parent_shared_step_name' => 'stepTest'
+                    )
                 )
             )
         );
@@ -189,7 +197,8 @@ class ChainManagerTest extends WebTestCase
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
-                    'stepTest' => array(
+                    'stepTestLabel' => array(
+                        'parent_shared_step_name' => 'stepTest',
                         'parameter_list' => array(
                             'return' => "ChangedByChain"
                         )
@@ -249,7 +258,8 @@ class ChainManagerTest extends WebTestCase
             'chainTest' => array(
                 'class' => '\Kitpages\ChainBundle\Tests\Sample\ChainSample',
                 'step_list' => array(
-                    'stepTest' => array(
+                    'stepTestLabel' => array(
+                        'parent_shared_step_name' => 'stepTest',
                         'parameter_list' => array(
                             'return' => "ChangedByChain"
                         )
@@ -272,7 +282,7 @@ class ChainManagerTest extends WebTestCase
 
         $chainTest = $chainManager->getChain('chainTest');
         $stepList = $chainTest->getStepList();
-        $stepList['stepTest']->setParameter('return', "ChangedManualy");
+        $stepList['stepTestLabel']->setParameter('return', "ChangedManualy");
         $chainTest->setStepList($stepList);
         $resultExecute = $chainTest->execute();
         $this->assertEquals($resultExecute, "ChangedManualy");
