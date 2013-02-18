@@ -9,6 +9,8 @@ from PHP.
 
 ## Versions
 
+? : v1.2.0 : step parameter template rendering
+02/18/2013 : v1.1.0 steps are not container aware anymore. Services are injected in config.yml
 02/18/2013 : v1.0.0 first stable version
 
 ## Actual state
