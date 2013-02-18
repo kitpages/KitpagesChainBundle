@@ -90,6 +90,8 @@ kitpages_chain:
             class: '\Kitpages\ChainBundle\Step\GitKitpages'
             parameter_list:
                 url: git.kitpages.com
+            service_list:
+                logger: logger
     chain_list:
         kitpagesMep:
             step_list:

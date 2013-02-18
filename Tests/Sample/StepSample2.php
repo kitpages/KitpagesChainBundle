@@ -23,4 +23,18 @@ class StepSample2 implements StepInterface
     {
     }
 
+    public function setService($key, $service)
+    {
+        $this->serviceList[$key] = $service;
+        return $this;
+    }
+
+    public function getService($key)
+    {
+        if (!isset($this->serviceList[$key])) {
+            return null;
+        }
+        return $this->serviceList[$key];
+    }
+
 }

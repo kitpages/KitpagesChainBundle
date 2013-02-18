@@ -9,13 +9,15 @@ class StepAbstractTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
     }
-    public function testContainer()
+    public function testService()
     {
         $step = new StepSampleFromAbstract();
         $container = $this->getMock('Symfony\Component\DependencyInjection\Container');
-        $step->setContainer($container);
-        $container2 = $step->getContainer();
+        $step->setService("container", $container);
+        $container2 = $step->getService("container");
         $this->assertTrue($container2 instanceof Container);
+        $noService = $step->getService("no-service");
+        $this->assertNull($noService);
     }
 
     public function testParameters()

@@ -4,6 +4,8 @@ kitpages_chain:
             class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
             parameter_list:
                 return: 'changedByStepConfig1'
+            service_list:
+                listener: stepListener
         StepSampleOriginal:
             class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
 

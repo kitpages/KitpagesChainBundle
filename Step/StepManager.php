@@ -56,8 +56,13 @@ class StepManager
             throw new ChainException("Step class ".$className." doesn't implements StepInterface");
         }
 
-        // inject DIC
-        $step->setContainer($this->container);
+        // inject Services
+        if (isset($stepFinalConfig['service_list']) && is_array($stepFinalConfig['service_list'])) {
+            foreach($stepFinalConfig['service_list'] as $key => $serviceName) {
+                $service = $this->container->get($serviceName);
+                $step->setService($key, $service);
+            }
+        }
 
         // set parameters
         if (isset($stepFinalConfig['parameter_list']) && is_array($stepFinalConfig['parameter_list'])) {

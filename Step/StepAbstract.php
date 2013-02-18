@@ -6,8 +6,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class StepAbstract implements StepInterface
 {
-    protected $container = null;
     protected $parameterList = array();
+    protected $serviceList = array();
 
     public function setParameter($key, $value)
     {
@@ -23,13 +23,18 @@ abstract class StepAbstract implements StepInterface
         return $this->parameterList[$key];
     }
 
-    public function setContainer(ContainerInterface $container)
+    public function setService($key, $service)
     {
-        $this->container = $container;
+        $this->serviceList[$key] = $service;
+        return $this;
     }
 
-    public function getContainer()
+    public function getService($key)
     {
-        return $this->container;
+        if (!isset($this->serviceList[$key])) {
+            return null;
+        }
+        return $this->serviceList[$key];
     }
+
 }

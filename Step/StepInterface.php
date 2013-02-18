@@ -25,10 +25,11 @@ interface StepInterface
     public function execute(StepEvent $event = null);
 
     /**
-     * used to receive the DIC
+     * used to receive services
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param string $key
+     * @param object $service : an object (hopefuly a service)
      * @return self instance for fluent interface
      */
-    public function setContainer(ContainerInterface $container);
+    public function setService($key, $service);
 }
