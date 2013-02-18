@@ -80,7 +80,7 @@ Let's see the configuration in config.yml
 
 ``` yaml
 kitpages_chain:
-    step_list:
+    shared_step_list:
         CodeCopy:
             class: '\Kitpages\ChainBundle\Step\CodeCopy'
             parameter_list:
@@ -93,19 +93,23 @@ kitpages_chain:
     chain_list:
         kitpagesMep:
             step_list:
-                CodeCopy: ~
-                GitKitpages:
+                CodeCopyLabel:
+                    parent_shared_step: CodeCopy
+                GitKitpagesLabel:
+                    parent_shared_step: GitKitpages
                     parameter_list:
                         url: git2.kitpages.com
 
         kitpagesCms:
             class: '\Kitpages\CmsBundle\Step\ChainStep'
             step_list:
-                CodeCopy:
+                CodeCopyLabel:
+                    parent_shared_step: CodeCopy
                     parameter_list:
                         src_dir: '/home/webadmin/htdocs/dev/cms.kitpages.com'
                         dest_dir: '/home/webadmin/htdocs/prod/cms.kitpages.com'
-                InstallCms:
+                InstallCmsLabel:
+                    parent_shared_step: InstallCms
                     class: '\Kitpages\CmsBundle\Step\Install'
                     parameter_list:
                         level: master
@@ -147,11 +151,7 @@ $codeCopyStepKitpages->execute();
 $chainManager = $this->get("kitpages_chain.chain");
 $kitpagesMepChainKitpages = $chainManager->getChain('kitpagesMep');
 $stepList = $kitpagesMepChainKitpages->getStepList();
-$stepList['GitKitpages']->setParameter('url', 'git2.kitpages.com');
-
-$codeCopyStepList = $kitpagesMepChainKitpages->getStep('CodeCopy');
-$codeCopyStepList->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
-$kitpagesMepChainKitpages->execute();
+$stepList['GitKitpagesLabel']->setParameter('url', 'git2.kitpages.com');
 ```
 
 
