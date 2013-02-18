@@ -25,6 +25,25 @@ class ProxyGeneratorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testProxyClassGeneration()
+    {
+        $proxyGenerator = new ProxyGenerator();
+        $originalClassName = '\Kitpages\ChainBundle\Tests\Sample\StepSample';
+
+        // this test is used to check if proxy class generated in the previous test
+        // is generated again or not.
+        $className = $proxyGenerator->generateProxyClass(
+            $originalClassName,
+            'class <<proxyClassName>> {}',
+            array("proxyClassName"=>'\Kitpages\ChainBundle\Proxy\Kitpages\ChainBundle\Tests\Sample\StepSample')
+        );
+
+        $this->assertEquals(
+            $className,
+            '\Kitpages\ChainBundle\Proxy\Kitpages\ChainBundle\Tests\Sample\StepSample'
+        );
+    }
+
     public function testProxyGeneration()
     {
         $proxyGenerator = new ProxyGenerator();
