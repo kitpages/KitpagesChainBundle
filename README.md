@@ -154,4 +154,53 @@ $stepList = $kitpagesMepChainKitpages->getStepList();
 $stepList['GitKitpagesLabel']->setParameter('url', 'git2.kitpages.com');
 ```
 
+## Using events
+
+With events, you can alter the way each step is executed. You can :
+
+* prevent the step from running the execute() method. $event->preventDefault()
+* in a chain you can stop the processing of the chain by using $event->stopPropagation()
+* alter the step before or after the execution
+* change return value
+* ...
+
+Create a listener :
+
+```php
+namespace Foo\Bar;
+class StepListener
+{
+    public function onStepExecute(StepEvent $event)
+    {
+        $step = $event->getStep();
+        // do whatever you want with the current step
+        // $event->preventDefault();
+        // $event->stopPropagation();
+        // log something ?
+    }
+}
+```
+
+register listener :
+
+```yaml
+services:
+    stepListener:
+        class: Foo\Bar\StepListener
+        tags:
+            - { name: kernel.event_listener, event: kitpages_chain.on_step_execute, method: onStepExecute }
+```
+
+``` php
+use Kitpages\ChainBundle\Step\StepEvent;
+[...]
+
+$event = new StepEvent();
+
+$stepKitpages = $this->get("kitpages_chain.step");
+$codeCopyStepKitpages = $stepKitpages->getStep('CodeCopy');
+$codeCopyStepKitpages->setParameter('src_dir', '/home/webadmin/htdocs/dev/cms2.kitpages.com');
+
+$codeCopyStepKitpages->execute($event);
+```
 
