@@ -156,4 +156,60 @@ class StepManagerTest extends WebTestCase
         $this->assertEquals($resultExecute, "configChanged");
     }
 
+    public function testBasicInheritanceStep()
+    {
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample'
+            ),
+            'childStep' => array(
+                "parent_shared_step" => "stepTest"
+            )
+        );
+
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+
+        $stepTest = $stepManager->getStep('childStep');
+        $resultExecute = $stepTest->execute();
+        $this->assertEquals($resultExecute, "original");
+    }
+
+    public function testExtendedInheritanceStep()
+    {
+        $stepListConfig = array(
+            'stepTest' => array(
+                'class' => '\Kitpages\ChainBundle\Tests\Sample\StepSample',
+                'parameter_list' => array(
+                    'return' => "changed"
+                )
+            ),
+            'childStep1' => array(
+                "parent_shared_step" => "stepTest"
+            ),
+            'childStep2' => array(
+                "parent_shared_step" => "childStep1"
+            ),
+            'childStep3' => array(
+                "parent_shared_step" => "childStep2",
+                'parameter_list' => array(
+                    'return' => "childStep3"
+                )
+            )
+        );
+
+        $stepManager = new StepManager($stepListConfig, $this->container, $this->eventDispatcher);
+
+        $stepTest = $stepManager->getStep('childStep1');
+        $resultExecute = $stepTest->execute();
+        $this->assertEquals($resultExecute, "changed");
+
+        $stepTest = $stepManager->getStep('childStep2');
+        $resultExecute = $stepTest->execute();
+        $this->assertEquals($resultExecute, "changed");
+
+        $stepTest = $stepManager->getStep('childStep3');
+        $resultExecute = $stepTest->execute();
+        $this->assertEquals($resultExecute, "childStep3");
+    }
+
 }

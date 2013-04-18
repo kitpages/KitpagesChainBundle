@@ -16,6 +16,13 @@ class ConsoleTest extends CommandTestCase
         $output = $this->runCommand($client, "kitpages:chain:run-step StepSampleOriginal");
         $this->assertContains('original', $output);
     }
+    public function testInheritanceStep()
+    {
+        $client = self::createClient();
+
+        $output = $this->runCommand($client, "kitpages:chain:run-step childStep");
+        $this->assertContains('changedByStepConfig1', $output);
+    }
     public function testRunCommandWithParameters()
     {
         $client = self::createClient();

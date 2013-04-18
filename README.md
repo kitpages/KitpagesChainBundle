@@ -88,6 +88,10 @@ kitpages_chain:
             parameter_list:
                 src_dir: '/home/webadmin/htdocs/dev/www.kitpages.com'
                 dest_dir: '/home/webadmin/htdocs/prod/www.kitpages.com'
+        CodeCopyPreProd:
+            parent_shared_step: CodeCopy
+            parameter_list:
+                dest_dir: '/home/webadmin/htdocs/pre-prod/www.kitpages.com'
         GitKitpages:
             class: '\Kitpages\ChainBundle\Step\GitKitpages'
             parameter_list:

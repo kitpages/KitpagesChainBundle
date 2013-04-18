@@ -30,11 +30,8 @@ class StepManager
     {
         $step = null;
 
-        $stepFinalConfig = array();
+        $stepFinalConfig = $this->getResultingConfig($stepName);
 
-        if (isset($this->stepList[$stepName])) {
-            $stepFinalConfig = $this->stepList[$stepName];
-        }
         $stepFinalConfig = $this->customMerge($stepFinalConfig, $stepConfig);
 
         // step name is only defined in chain config
@@ -72,6 +69,25 @@ class StepManager
         }
 
         return $step;
+    }
+
+    public function getResultingConfig($stepName)
+    {
+        $stepConfigStack = array();
+        $runningStepName = $stepName;
+        while (isset($this->stepList[$runningStepName])) {
+            array_push($stepConfigStack, $stepConfig = $this->stepList[$runningStepName]);
+            $runningStepName = null;
+            if (isset($stepConfig["parent_shared_step"])) {
+                $runningStepName = $stepConfig["parent_shared_step"];
+            }
+        }
+
+        $stepFinalConfig = array();
+        while($stepConfig = array_pop($stepConfigStack)) {
+            $stepFinalConfig = $this->customMerge($stepFinalConfig, $stepConfig);
+        }
+        return $stepFinalConfig;
     }
 
     protected function customMerge($tab1, $tab2)

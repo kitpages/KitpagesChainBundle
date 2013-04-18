@@ -14,6 +14,13 @@ kitpages_chain:
             parameter_list:
                 throw_exception: true
 
+        parentStep:
+            class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
+            parameter_list:
+                return: 'changedByStepConfig1'
+        childStep:
+            parent_shared_step: parentStep
+
 
     chain_list:
         StandardChain:

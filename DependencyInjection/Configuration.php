@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('kitpages_chain');
 
         $this->addStepListSection($rootNode);
-        //$this->addChainListSection($rootNode);
+        $this->addChainListSection($rootNode);
 
         return $treeBuilder;
     }
@@ -49,8 +49,10 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('shared_step_name')
                     ->prototype('array')
                         ->children()
+                            ->scalarNode('parent_shared_step')
+                                ->cannotBeEmpty()
+                            ->end()
                             ->scalarNode('class')
-                                ->isRequired()
                                 ->cannotBeEmpty()
                             ->end()
                             ->arrayNode('parameter_list')
@@ -68,6 +70,13 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+            ->end();
+    }
+
+    private function addChainListSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
                 ->arrayNode('chain_list')
                     ->useAttributeAsKey('chain_name')
                     ->prototype('array')
