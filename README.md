@@ -89,6 +89,15 @@ kitpages_chain:
             parameter_list:
                 src_dir: '/home/webadmin/htdocs/dev/www.kitpages.com'
                 dest_dir: '/home/webadmin/htdocs/prod/www.kitpages.com'
+            help:
+                short: copy a directory to another
+                complete: |
+                    This step copies a directory to another
+                    @param string return string returned by the step
+                    @service listener service used for xxx
+                    @event:returnValue string
+                    @return boolean true if ok or false
+
         CodeCopyPreProd:
             parent_shared_step: CodeCopy
             parameter_list:

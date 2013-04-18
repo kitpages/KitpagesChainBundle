@@ -6,6 +6,14 @@ kitpages_chain:
                 return: 'changedByStepConfig1'
             service_list:
                 listener: stepListener
+            help:
+                short: step sample displaying a string
+                complete: |
+                    displays a string
+                    @param string return string returned by the step
+                    @service listener service used for xxx
+                    @event:returnValue string
+                    @return boolean true if ok or false
         StepSampleOriginal:
             class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
 
@@ -66,7 +74,6 @@ kitpages_chain:
         StandardChainAndNewStep:
             step_list:
                 MyNewStep:
-                    parent_shared_step: ~
                     class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
                     parameter_list:
                         return: 'ResultStandardChainAndNewStep'

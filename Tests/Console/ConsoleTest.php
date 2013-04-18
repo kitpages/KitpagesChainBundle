@@ -74,4 +74,19 @@ class ConsoleTest extends CommandTestCase
         $this->assertContains("output=null", $output);
     }
 
+    public function testHelp()
+    {
+        $client = self::createClient();
+
+        $output = $this->runCommand($client, "kitpages:chain:help-step");
+        $this->assertContains("StepSample : step sample displaying a string", $output);
+        $this->assertContains("CustomPreventDefault : no help", $output);
+        var_dump($output);
+
+        $output = $this->runCommand($client, "kitpages:chain:help-step StepSample");
+        $this->assertContains("@param string return string returned by the step", $output);
+        $this->assertContains("@event:returnValue string", $output);
+        var_dump($output);
+    }
+
 }
