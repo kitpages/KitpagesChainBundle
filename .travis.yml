@@ -10,6 +10,7 @@ before_script:
 
 script: phpunit --coverage-text
 
+
 notifications:
   email:
     - travis-ci@kitpages.fr
