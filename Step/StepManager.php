@@ -75,6 +75,7 @@ class StepManager
     {
         $stepConfigStack = array();
         $runningStepName = $stepName;
+        // register list of steps inherited
         while (isset($this->stepList[$runningStepName])) {
             array_push($stepConfigStack, $stepConfig = $this->stepList[$runningStepName]);
             $runningStepName = null;
@@ -82,10 +83,21 @@ class StepManager
                 $runningStepName = $stepConfig["parent_shared_step"];
             }
         }
-
+        // build final stepConfig by merging steps in the right order
         $stepFinalConfig = array();
         while($stepConfig = array_pop($stepConfigStack)) {
             $stepFinalConfig = $this->customMerge($stepFinalConfig, $stepConfig);
+        }
+
+        // erase help and put only last level help if present
+        // because help is never inherited
+        if (isset($this->stepList[$stepName])) {
+            $help = array();
+            $originalStepConfig = $this->stepList[$stepName];
+            if (isset($originalStepConfig['help'])) {
+                $help = $originalStepConfig['help'];
+            }
+            $stepFinalConfig["help"] = $help;
         }
         return $stepFinalConfig;
     }
