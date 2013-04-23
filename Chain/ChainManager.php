@@ -22,29 +22,58 @@ class ChainManager
 
     public function getChain($chainName)
     {
-        $chainConfig = $this->chainConfigList[$chainName];
-        // normalize chainConfig
-        if (!isset($chainConfig['step_list'])) {
-            $chainConfig['step_list'] = array();
-        }
-
-        // instanciate chain instance
-        $chainClass = '\Kitpages\ChainBundle\Chain\Chain';
-        if (isset($chainConfig['class'])) {
-            if (! class_exists($chainConfig['class']) ) {
-                throw new ChainException("Chain class ".$chainConfig['class']." doesn't exists");
-            }
-            $chainClass = $chainConfig['class'];
-        }
+        $chainConfig = $this->getChainConfig($chainName);
+        $chainClass = $chainConfig['class'];
         $chain = new $chainClass();
-        if (! $chain instanceof ChainInterface) {
-            throw new ChainException("Chain class $chainClass doesn't implements ChainInterface");
-        }
-
         // fill chain with step list
         $stepList = $this->initStepList($chainConfig['step_list']);
         $chain->setStepList($stepList);
         return $chain;
+    }
+
+    public function getChainConfig($chainName)
+    {
+        $chainConfig = $this->chainConfigList[$chainName];
+        $chainConfig = $this->normalizeChainConfig($chainConfig);
+        $chainClass = $chainConfig['class'];
+        if (! class_exists($chainClass) ) {
+            throw new ChainException("Chain class $chainClass doesn't exists");
+        }
+        $refClass = new \ReflectionClass($chainClass);
+        if (!$refClass->implementsInterface('\Kitpages\ChainBundle\Chain\ChainInterface')) {
+            throw new ChainException("Chain class $chainClass doesn't implements ChainInterface");
+        }
+        return $chainConfig;
+    }
+
+    public function normalizeChainConfig($chainConfig)
+    {
+        // normalize chainConfig
+        if (!isset($chainConfig['step_list'])) {
+            $chainConfig['step_list'] = array();
+        }
+        // default chain class
+        if (!isset($chainConfig['class'])) {
+            $chainConfig['class'] = '\Kitpages\ChainBundle\Chain\Chain';
+        }
+        // beginning backslash
+        $chainConfig['class'] = '\\'.ltrim($chainConfig['class'], '\\');
+
+        // defines default values for help
+        if (!isset($chainConfig["help"])) {
+            $chainConfig["help"] = array();
+        }
+        if (!isset($chainConfig["help"]["short"])) {
+            $chainConfig["help"]["short"] = "no help";
+        }
+        if (!isset($chainConfig["help"]["complete"])) {
+            $chainConfig["help"]["complete"] = "no description";
+        }
+        if (!isset($chainConfig["help"]["private"])) {
+            $chainConfig["help"]["private"] = false;
+        }
+
+        return $chainConfig;
     }
 
     public function initStepList($stepConfigList)
