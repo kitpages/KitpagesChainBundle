@@ -9,7 +9,8 @@ from PHP.
 
 ## Versions
 
-04/23/2013 : v1.4.0 help system
+04/23/2013 : v1.5.0 help system chains
+04/23/2013 : v1.4.0 help system steps
 04/18/2013 : v1.3.0 step inheritance with the optional
 02/19/2013 : v1.2.0 step parameter template rendering
 02/18/2013 : v1.1.0 steps are not container aware anymore. Services are injected in config.yml
