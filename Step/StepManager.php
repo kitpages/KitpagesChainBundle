@@ -33,6 +33,7 @@ class StepManager
         $stepFinalConfig = $this->getResultingConfig($stepName);
 
         $stepFinalConfig = $this->customMerge($stepFinalConfig, $stepConfig);
+        $stepFinalConfig = $this->normalizeStepConfig($stepFinalConfig);
 
         // step name is only defined in chain config
         if (!isset($stepFinalConfig['class'])) {
@@ -73,16 +74,8 @@ class StepManager
 
     public function getResultingConfig($stepName)
     {
-        $stepConfigStack = array();
-        $runningStepName = $stepName;
-        // register list of steps inherited
-        while (isset($this->stepList[$runningStepName])) {
-            array_push($stepConfigStack, $stepConfig = $this->stepList[$runningStepName]);
-            $runningStepName = null;
-            if (isset($stepConfig["parent_shared_step"])) {
-                $runningStepName = $stepConfig["parent_shared_step"];
-            }
-        }
+        $stepConfigStack = $this->getStepConfigStack($stepName);
+
         // build final stepConfig by merging steps in the right order
         $stepFinalConfig = array();
         while($stepConfig = array_pop($stepConfigStack)) {
@@ -99,7 +92,45 @@ class StepManager
             }
             $stepFinalConfig["help"] = $help;
         }
-        return $stepFinalConfig;
+
+        return $this->normalizeStepConfig($stepFinalConfig);
+    }
+    
+    public function normalizeStepConfig($stepConfig)
+    {
+        // defines default values for help
+        if (!isset($stepConfig["help"]["short"])) {
+            $stepConfig["help"]["short"] = "no help";
+        }
+        if (!isset($stepConfig["help"]["complete"])) {
+            $stepConfig["help"]["complete"] = "no description";
+        }
+        if (!isset($stepConfig["help"]["private"])) {
+            $stepConfig["help"]["private"] = false;
+        }
+        if (!isset($stepConfig["parameter_list"])) {
+            $stepConfig["parameter_list"] = array();
+        }
+        // normalize classname
+        if (isset($stepConfig['class']) && $stepConfig['class']) {
+            $stepConfig['class'] = '\\'.ltrim($stepConfig['class'], '\\');
+        }
+        return $stepConfig;
+    }
+    public function getStepConfigStack($stepName)
+    {
+        $stepConfigStack = array();
+        $runningStepName = $stepName;
+        // register list of steps inherited
+        while (isset($this->stepList[$runningStepName])) {
+            $stepConfig = $this->stepList[$runningStepName];
+            $stepConfigStack[$runningStepName] = $stepConfig;
+            $runningStepName = null;
+            if (isset($stepConfig["parent_shared_step"])) {
+                $runningStepName = $stepConfig["parent_shared_step"];
+            }
+        }
+        return $stepConfigStack;
     }
 
     protected function customMerge($tab1, $tab2)

@@ -37,6 +37,15 @@ kitpages_chain:
                 return: 'changedByStepConfig1'
         childStep:
             parent_shared_step: parentStep
+            help:
+                short: childStep sample
+                complete: |
+                    displays a string
+                    @param string return string returned by the step
+                    @service listener service used for xxx
+                    @event:returnValue string
+                    @return boolean true if ok or false
+
 
 
     chain_list:

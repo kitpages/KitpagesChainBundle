@@ -83,9 +83,10 @@ class ConsoleTest extends CommandTestCase
         $this->assertContains("CustomPreventDefault : no help", $output);
         var_dump($output);
 
-        $output = $this->runCommand($client, "kitpages:chain:help-step StepSample");
+        $output = $this->runCommand($client, "kitpages:chain:help-step childStep");
         $this->assertContains("@param string return string returned by the step", $output);
         $this->assertContains("@event:returnValue string", $output);
+        $this->assertContains("childStep <- parentStep", $output);
         var_dump($output);
     }
 

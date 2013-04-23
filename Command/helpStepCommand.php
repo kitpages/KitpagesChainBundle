@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
+use Kitpages\ChainBundle\Step\StepManager;
+
 class helpStepCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -23,42 +25,42 @@ EOT
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var StepManager $stepManager */
+        $stepManager = $this->getContainer()->get("kitpages_chain.step");
+
         $stepName = $input->getArgument('stepName');
+
         $stepConfigList = $this->getContainer()->getParameter("kitpages_chain.shared_step_list");
         if (!$stepName) {
             foreach($stepConfigList as $stepName => $stepConfig) {
-                $help = "no help";
-                if (isset($stepConfig['help']) && isset($stepConfig['help']['short'])) {
-                    if ($stepConfig['help']['private']) {
-                        continue;
-                    }
-                    $help = $stepConfig['help']['short'];
+                $resultingConfig = $stepManager->getResultingConfig($stepName);
+                if ($resultingConfig['help']['private']) {
+                    continue;
                 }
+                $help = $resultingConfig['help']['short'];
                 $output->writeln("$stepName : ".$help);
             }
             return;
         }
 
-        if (!isset($stepConfigList[$stepName])) {
+        $resultingConfig = $stepManager->getResultingConfig($stepName);
+        if (!$resultingConfig) {
             $output->writeln("no step with the name $stepName.");
             return;
         }
 
-        $stepConfig = $stepConfigList[$stepName];
-        $shortHelp = "no help";
-        if (isset($stepConfig['help']) && isset($stepConfig['help']['short'])) {
-            $shortHelp = $stepConfig['help']['short'];
+        $output->writeln("$stepName : ".$resultingConfig["help"]["short"]);
+        $output->writeln("-- description --");
+        $output->writeln($resultingConfig["help"]["complete"]);
+        $output->writeln("-- default values --");
+        $stepConfigStack = $stepManager->getStepConfigStack($stepName);
+        $output->writeln("hierarchy: ".implode(" <- ", array_keys($stepConfigStack)));
+        $output->writeln("stepClass: ".$resultingConfig["class"]);
+        $output->writeln("default parameters:");
+        foreach ($resultingConfig["parameter_list"] as $key=>$val) {
+            $output->writeln("-> $key = $val");
         }
-        $completeHelp = "no complete help";
-        if (isset($stepConfig['help']) && isset($stepConfig['help']['complete'])) {
-            $completeHelp = $stepConfig['help']['complete'];
-        }
-
-        $output->writeln("$stepName : ".$shortHelp);
-        $output->writeln("--");
-        $output->writeln($completeHelp);
-        $output->writeln("--");
-
+        $output->writeln("-- end --");
     }
 
 
