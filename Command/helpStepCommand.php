@@ -29,6 +29,9 @@ EOT
             foreach($stepConfigList as $stepName => $stepConfig) {
                 $help = "no help";
                 if (isset($stepConfig['help']) && isset($stepConfig['help']['short'])) {
+                    if ($stepConfig['help']['private']) {
+                        continue;
+                    }
                     $help = $stepConfig['help']['short'];
                 }
                 $output->writeln("$stepName : ".$help);
@@ -54,6 +57,8 @@ EOT
         $output->writeln("$stepName : ".$shortHelp);
         $output->writeln("--");
         $output->writeln($completeHelp);
+        $output->writeln("--");
+
     }
 
 

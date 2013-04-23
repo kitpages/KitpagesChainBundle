@@ -16,6 +16,15 @@ kitpages_chain:
                     @return boolean true if ok or false
         StepSampleOriginal:
             class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'
+            help:
+                short: private step
+                complete: |
+                    displays a string
+                    @param string return string returned by the step
+                    @service listener service used for xxx
+                    @event:returnValue string
+                    @return boolean true if ok or false
+                private: true
 
         CustomPreventDefault:
             class: '\Kitpages\ChainBundle\Tests\Sample\StepSample'

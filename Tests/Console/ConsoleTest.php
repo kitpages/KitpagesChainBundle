@@ -89,4 +89,12 @@ class ConsoleTest extends CommandTestCase
         var_dump($output);
     }
 
+    public function testHelpPrivate()
+    {
+        $client = self::createClient();
+
+        $output = $this->runCommand($client, "kitpages:chain:help-step");
+        $this->assertNotContains("private step", $output);
+        $this->assertNotContains("StepSampleOriginal", $output);
+    }
 }
