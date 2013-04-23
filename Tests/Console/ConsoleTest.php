@@ -74,7 +74,7 @@ class ConsoleTest extends CommandTestCase
         $this->assertContains("output=null", $output);
     }
 
-    public function testHelp()
+    public function testStepHelp()
     {
         $client = self::createClient();
 
@@ -90,7 +90,7 @@ class ConsoleTest extends CommandTestCase
         var_dump($output);
     }
 
-    public function testHelpPrivate()
+    public function testStepHelpPrivate()
     {
         $client = self::createClient();
 
@@ -98,4 +98,20 @@ class ConsoleTest extends CommandTestCase
         $this->assertNotContains("private step", $output);
         $this->assertNotContains("StepSampleOriginal", $output);
     }
+
+    public function testChainHelp()
+    {
+        $client = self::createClient();
+
+        $output = $this->runCommand($client, "kitpages:chain:help-chain");
+        $this->assertContains("CustomStopPropagation : CustomPropagation Help", $output);
+        $this->assertContains("CustomChainAndStepParameter : no help", $output);
+        var_dump($output);
+
+        $output = $this->runCommand($client, "kitpages:chain:help-chain CustomStopPropagation");
+        $this->assertContains("-> StepSampleOriginal", $output);
+        $this->assertContains("lorem ipsum", $output);
+        var_dump($output);
+    }
+
 }

@@ -88,6 +88,10 @@ kitpages_chain:
                     parent_shared_step: StepSampleOriginal
                     parameter_list:
                         return: 'ResultPropagationNotStopped'
+            help:
+                short: "CustomPropagation Help"
+                complete: |
+                    lorem ipsum
 
         StandardChainAndNewStep:
             step_list:

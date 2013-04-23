@@ -124,9 +124,24 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
+                            ->arrayNode('help')
+                                ->children()
+                                    ->scalarNode('short')
+                                        ->cannotBeEmpty()
+                                    ->end()
+                                    ->scalarNode('complete')
+                                        ->cannotBeEmpty()
+                                    ->end()
+                                    ->booleanNode('private')
+                                        ->defaultValue(false)
+                                        ->cannotBeEmpty()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
+
             ->end();
     }
 
