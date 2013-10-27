@@ -4,7 +4,7 @@
     "description": "This is a Symfony2 bundle that executes the classes one after the other.",
     "keywords": ["command chain"],
     "homepage": "https://github.com/kitpages/KitpagesChainBundle",
-    "license": "BSD",
+    "license": "MIT",
     "authors": [
         {
             "name": "Sebastien Lefebvre"
