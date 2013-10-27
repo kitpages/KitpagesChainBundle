@@ -1,8 +1,6 @@
 <?php
 namespace Kitpages\ChainBundle\Step;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Kitpages\ChainBundle\Step\StepEvent;
 
 interface StepInterface

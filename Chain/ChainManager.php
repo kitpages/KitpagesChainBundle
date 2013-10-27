@@ -3,7 +3,6 @@ namespace Kitpages\ChainBundle\Chain;
 
 use Kitpages\ChainBundle\Step\StepManager;
 use Kitpages\ChainBundle\ChainException;
-use Kitpages\ChainBundle\Chain\ChainInterface;
 
 class ChainManager
 {
